@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendrier de l'Avent 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a0000 0%, #4a0000 50%, #1a0000 100%);
+            min-height: 100vh;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .snow {
+            position: fixed;
+            top: -10px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 1em;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffd700;
+            font-size: 3em;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 20px #ffd700, 0 0 30px #ffd700; }
+            50% { text-shadow: 0 0 30px #ffd700, 0 0 40px #ffd700; }
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .day-box {
+            position: relative;
+            aspect-ratio: 1;
+            background: linear-gradient(145deg, #8B0000, #DC143C);
+            border: 3px solid #ffd700;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .day-box:hover:not(.locked) {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 8px 25px rgba(255,215,0,0.5);
+        }
+
+        .day-box.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+            background: linear-gradient(145deg, #4a4a4a, #6a6a6a);
+        }
+
+        .day-box.opened {
+            background: linear-gradient(145deg, #2d5016, #4a7c2c);
+        }
+
+        .day-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            font-weight: bold;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            pointer-events: none;
+        }
+
+        .day-box.opened .day-number {
+            display: none;
+        }
+
+        .opened-content {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2em;
+            color: #ffd700;
+        }
+
+        .day-box.opened .opened-content {
+            display: block;
+            animation: reveal 0.5s ease;
+        }
+
+        @keyframes reveal {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(145deg, #8B0000, #DC143C);
+            padding: 40px;
+            border-radius: 20px;
+            border: 4px solid #ffd700;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: auto;
+            animation: slideDown 0.5s ease;
+            box-shadow: 0 0 50px rgba(255,215,0,0.5);
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translate(-50%, -150%);
+            }
+            to {
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .parchment {
+            background: #f4e4c1;
+            color: #3a2a1a;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+            font-family: 'Georgia', serif;
+            line-height: 1.8;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 2em;
+            color: #ffd700;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: transform 0.2s;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg) scale(1.2);
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        .modal-content video {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .lock-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            font-size: 1.5em;
+        }
+
+        /* Styles pour le Sudoku */
+        .sudoku-container {
+            background: #f4e4c1;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .sudoku-container h2 {
+            color: #8B0000;
+            margin-bottom: 20px;
+        }
+
+        .sudoku-grid {
+            display: inline-grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 0;
+            border: 3px solid #3a2a1a;
+            background: #3a2a1a;
+            margin: 20px auto;
+        }
+
+        .sudoku-cell {
+            width: 45px;
+            height: 45px;
+            border: 1px solid #999;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            background: white;
+            color: #333;
+        }
+
+        .sudoku-cell:disabled {
+            background: #e8d7b8;
+            color: #000;
+            font-weight: bold;
+        }
+
+        .sudoku-cell.error {
+            background: #ffcccc;
+        }
+
+        .sudoku-cell.correct {
+            background: #ccffcc;
+        }
+
+        .sudoku-cell:nth-child(3n) {
+            border-right: 2px solid #3a2a1a;
+        }
+
+        .sudoku-cell:nth-child(n+19):nth-child(-n+27),
+        .sudoku-cell:nth-child(n+46):nth-child(-n+54) {
+            border-bottom: 2px solid #3a2a1a;
+        }
+
+        .sudoku-buttons {
+            margin-top: 20px;
+        }
+
+        .sudoku-btn {
+            background: #8B0000;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .sudoku-btn:hover {
+            background: #DC143C;
+            transform: scale(1.05);
+        }
+
+        .sudoku-message {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            min-height: 30px;
+        }
+
+        .sudoku-message.success {
+            color: #2d5016;
+        }
+
+        .sudoku-message.error {
+            color: #8B0000;
+        }
+
+        @media (max-width: 600px) {
+            .sudoku-cell {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+        }
+		.bells-grid {
+    		display: flex;
+  		  justify-content: center;
+  		  gap: 15px;
+  		  flex-wrap: wrap;
+  		  margin-top: 20px;
+		}
+		.bell {
+  		  background: radial-gradient(circle, #ffd700 40%, #c99a00 100%);
+  		  border: 3px solid #fff3b0;
+  		  border-radius: 50%;
+  		  width: 80px;
+ 			 height: 80px;
+  		  font-size: 2em;
+   		 cursor: pointer;
+  		  transition: transform 0.2s, background 0.3s;
+		    box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+		}
+		.bell:hover {
+		    transform: scale(1.1);
+		}
+		.bell.active {
+		    background: radial-gradient(circle, #fff9c4 40%, #ffd700 100%);
+		    transform: scale(1.2);
+		}
+		.decorate-container {
+   		 text-align: center;
+  		  color: white;
+		}
+		.tree-zone {
+		    position: relative;
+ 		   display: inline-block;
+  		  background: radial-gradient(circle, #004400 0%, #002200 100%);
+  		  border: 4px solid #ffd700;
+ 		   border-radius: 20px;
+ 		   width: 300px;
+ 		   height: 400px;
+ 		   overflow: hidden;
+ 		   margin: 0 auto;
+		}
+		.tree-zone img#tree {
+   		 width: 100%;
+ 		   height: auto;
+ 		   pointer-events: none;
+		}
+		.ornaments {
+   		 margin-top: 20px;
+  		  display: flex;
+  		  justify-content: center;
+  		  gap: 15px;
+		}
+		.ornament {
+ 		   cursor: grab;
+ 		   transition: transform 0.2s;
+		}
+		.ornament:hover {
+ 		   transform: scale(1.2);
+		}
+		.placed {
+		    pointer-events: none;
+		    user-select: none;
+		}
+		.day-box:nth-child(25) {
+			grid-column: span 2;
+			background: linear-gradient(145deg, #FFD700, #FFA500);
+		}
+    </style>
+</head>
+<body>
+    <div class="snow" id="snow"></div>
+    
+    <div class="container">
+        <h1>🎄 Calendrier de l'Avent 2025 🎄</h1>
+        <div class="calendar-grid" id="calendar"></div>
+    </div>
+
+    <div class="modal" id="modal">
+        <div class="modal-content" id="modalContent">
+            <button class="close-btn" onclick="closeModal()">×</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration du contenu de chaque jour
+        const dayContents = {
+            1: { type: 'text', content: 'Bienvenue dans le calendrier de l\'avent ! Pleins de bonnes choses vous attendent durant ce beau mois de décembre. Soyez curieux, attentifs, joyeux et émerveillés par cette fête de fin d\'année. Soyez sages 🎅' }, // OK NE PAS TOUCHER
+            2: { type: 'image', content: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHp1djA0bDI3cHBoOWwwaWRrYXNlNXk5cm55YnF5bTFtNzY3bmx6OSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/LBAv3HJDl2WwU/giphy.gif' }, // OK NE PAS TOUCHER
+            3: { type: 'youtube', content: 'https://www.youtube.com/embed/Ay8lynMZ4mE' }, // OK NE PAS TOUCHER
+            4: { type: 'sudoku', difficulty: 'easy' }, // OK NE PAS TOUCHER
+            5: { 
+				type: 'image', 
+				content: 'https://blogvoyages.fr/wp-content/uploads/2020/11/strasbourg_1551479018.jpg',
+				caption: 'Les magnifiques marchés de Noël de Strasbourg 🎄✨'
+			}, // OK NE PAS TOUCHER
+            6: { type: 'bells' }, // OK NE PAS TOUCHER
+            7: { 
+				type: 'text', 
+				content: `
+					<h2>🍕 Recette de Sapin pizza de Noël 🍕</h2>
+        
+					<h3>Pour 1 pizza <h3>
+					<h3>Ingrédients :</h3>
+					<ul>
+						<li>1 pâte à pizza</li>
+						<li>3 c. à soupe de sauce tomate</li>
+						<li>3 pincées de fromage râpé</li>
+						<li>5 tomates-cerises rouges </li>
+						<li>5 tomates-cerises oranges</li>
+						<li>3 minis-mozzarella coupées en deux</li>
+						<li>6 rondelles de chorizo (ou de saucisson ou saucisse végan ou courgette cuite) </li>
+						<li>8 à 10 feuilles de basilic </li>
+					</ul>
+		
+					<p><strong>Temps de préparation :</strong> 20 à 30 min | <strong>Cuisson :</strong> 15 min</p>
+        
+					<h3>Préparation :</h3>
+					<ol>
+						<li>Commencez par découper la pâte à pizza en forme de sapin de Noël.</li>
+						<li>Ensuite, tartinez la pâte de sauce tomate. Saupoudrez le tout de fromage râpé. </li>
+						<li>Passez à la décoration de votre pizza au look de sapin de Noël. Répartissez les rondelles de charcuterie (ou saucisse vegan ou courgette), les tomates cerises, les minis-mozzarella coupées en deux et les feuilles de basilic. </li>
+						<li>Découpez une étoile dans une tranche de saucisson (ou saucisse végan ou courgette), et disposez-la au sommet du sapin de Noël à croquer. </li>
+						<li>Enfournez votre pizza en forme de sapin avec des boules de Noël dans le four préchauffé à 210°C pendant 15 à 18 minutes selon votre four.</li>
+					</ol>
+    ` 
+			}, // OK NE PAS TOUCHER
+            8: { type: 'image', content: 'https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnd1bXFybWhvOXpucWppNXZlOGFjMXVndTM0dHhxOXlsdHBmempnZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/WmkqburJqXziM/giphy.gif' }, // OK NE PAS TOUCHER
+            9: { type: 'youtube', content: 'https://www.youtube.com/embed/27JZMgLZjj0' }, // OK NE PAS TOUCHER
+            10: { type: 'text', content: 'Des petits gâteaux de Noël sont cachés derrière la télévision de la salle de réunion🍰' }, // OK NE PAS TOUCHER
+            11: { 
+				type: 'text', 
+				content: `
+					<h2 style="text-align: center; margin-bottom: 20px;">❄️ Poème acrostiche de Noël ❄️</h2>
+					<div style="text-align: left; font-style: italic; line-height: 2; font-size: 1.1em;">
+						Nous serons bientôt arrivés
+						<br>
+						Où les rêves se fondent dans la réalité
+						<br>
+						Enchantant les petits et les grands
+						<br>
+						Laissant les tracas s'envoler un moment
+						<br>
+						<br>
+						Néanmoins, malgré les difficultés d'hier
+						<br>
+						Oublier les soucis, juste faire plaisir,
+						<br>
+						Espérant un peu de lumière, un soir d'hiver,
+						<br>
+						L'expression la plus belle, juste un sourire.
+						<br>
+						<br>
+						Notre peine sera peut être enfin, 
+						<br>
+						Oubliée tout à fond du ravin, 
+						<br>
+						Et nos rires et sourires deviendront, 
+						<br>
+						Lumineux, et des larmes la solution.
+						<br>
+						<br>
+						Ne pas être seul ce jour là
+						<br>
+						Oser ouvrir son cœur 
+						<br>
+						Et chercher un peu de joie 
+						<br>
+						Loin de toute rancœur
+						<br>
+						<br>
+						Nuit de lumière froide 
+						<br>
+						Où la rue oublie sa grisaille. 
+						<br>
+						Enfant, des rêves en pagailles 
+						<br>
+						Le matin, les bancs toujours roides.
+						<br>
+						<br>
+						Ne pas oublier les isolés sans rien 
+						<br>
+						Où qu'ils soient, s'ils ont froid 
+						<br>
+						En ce jour devant notre festin 
+						<br>
+						Laissons le rêve en faire des rois
+						<br>
+						<br>
+						Naître comme une seconde fois 
+						<br>
+						Oubliant hier et tout le passé 
+						<br>
+						Entendre le murmure d'une douce voix 
+						<br>
+						Louant Noël en tendres pensées
+					</div>
+				` 
+			}, // OK NE PAS TOUCHER
+            12: { 
+				type: 'text', 
+				content: `
+					<h2>☕ Boissons de Noël (Version sans alcool) ☕</h2>
+        
+					<h3>🍷Chocolat chaud pour 8 personnes 🍷<h3>
+					<h3>Ingrédients :</h3>
+					<ul>
+						<li>2 litres de lait</li>
+						<li>2 tablettes de chocolat noir, dont l'une sera du chocolat pâtissier</li>
+						<li>3 grosses cuillerées de crème fraiche épaisse</li>
+						<li>2 cuillères à soupe de sucre</li>
+						<li>1 peu d'extrait de vanille</li>
+						<li>Quelques pincées de cannelle ou de piment selon vos goûts</li>
+						<li>Un peu de chantilly et quelques chamallow pour les gourmands</li>
+					</ul>
+		
+					<p><strong>Temps de préparation :</strong> 10 min | <strong>Cuisson :</strong> 10 min</p>
+        
+					<h3>Préparation :</h3>
+					<ol>
+						<li>Dans une casserole, mettez le lait et laissez chauffer à feu doux jusqu'à ce que le lait soit tiède.</li>
+						<li>Cassez en morceaux vos tablettes de chocolat que vous ajouterez au lait tiède, puis remuez doucement jusqu'à ce que le mélange soit homogène et ajoutez enfin la crème fraiche.</li>
+						<li>Continuez à mélanger avec un fouet afin que la crème ne fasse pas de grumeaux.</li>
+						<li>Ajoutez le sucre, l'extrait de vanille et un peu de cannelle (ou un peu de piment).</li>
+						<li>Pour les plus gourmans, vous pouvez ajouter un peu de chantilly et parsemer de quelques chamallow.</li>
+						<li>Dégustez sans attendre</li>
+					</ol>
+					<h2>🍾 Boissons de Noël (Version avec alcool) 🍾</h2>
+        
+					<h3>🍷Vin chaud pour 8 personnes 🍷<h3>
+					<h3>Ingrédients :</h3>
+					<ul>
+						<li>1L de vin rouge</li>
+						<li>167g de sucre roux</li>
+						<li>2/3 de zeste d'orange</li>
+						<li>1 étoile de badiane (anis étoilé)</li>
+						<li>1.5 clou de girofle</li>
+						<li>2/3 de lorceau de gingembre émincé</li>
+						<li>2/3 d'une orange</li>
+						<li>2/3 de zeste de citron</li>
+						<li>1.5 bâton de canelle</li>
+						<li>2/3 de pointe de couteau de noix de muscade rapée</li>
+					</ul>
+		
+					<p><strong>Temps de préparation :</strong> 20 min | <strong>Cuisson :</strong> 10-15 min</p>
+        
+					<h3>Préparation :</h3>
+					<ol>
+						<li>Mélanger tous les ingrédients directement dans la casserole : vin, sucre, cannelle, étoiles de badiane, clou de girofle, gingembre, noix de muscade et zestes.</li>
+						<li>Porter à ébullition très doucement et laisser frémir 5 minutes </li>
+						<li>Servir très chaud dans des verres en filtrant à l'aide d'une passoire.</li>
+						<li>Disposer une rondelle d'orange par verre.</li>
+					</ol>
+    ` 
+			}, // OK NE PAS TOUCHER
+            13: { type: 'youtube', content: 'https://www.youtube.com/embed/LYQ3NLetZOA' }, // OK NE PAS TOUCHER
+            14: { type: 'image', content: 'https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExODNzcDN3aDgxdTN5a2JzcGFxYTV6bzNkZTB2eWo5Y3lvODhoZWJqZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0HlPoAExuyv2HSbm/giphy.gif' }, // OK NE PAS TOUCHER
+            15: { 
+				type: 'image', 
+				content: 'https://santaclausvillage.info/wp-content/uploads/2023/06/hero-winter-1280x688.jpg',
+				caption: '🎅🏻 Le village du père noël en Laponie à Rovaniemi 🤶🏻'
+			}, // OK NE PAS TOUCHER
+            16: { 
+				type: 'text', 
+				content: `
+					<div style="text-align: center;">
+						<h2>🎅 Quiz de Noël 🎄</h2>
+						<p style="margin: 20px 0; font-size: 1.1em;">Teste tes connaissances sur Noël !</p>
+            
+						<div id="quizContainer" style="background: #f4e4c1; color: #3a2a1a; padding: 30px; border-radius: 10px; margin: 20px 0;">
+							<div id="question" style="font-size: 1.3em; font-weight: bold; margin-bottom: 25px;"></div>
+							<div id="answers" style="display: flex; flex-direction: column; gap: 15px;"></div>
+							<div id="quizResult" style="margin-top: 25px; font-weight: bold; font-size: 1.2em; min-height: 30px;"></div>
+							<button id="nextBtn" style="display: none; margin-top: 20px; background: #8B0000; color: #ffd700; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-size: 1.1em; font-weight: bold;">
+								Question suivante
+							</button>
+						</div>
+            
+						<div id="finalScore" style="display: none; background: #2a1a0a; color: #ffd700; padding: 30px; border-radius: 10px; margin: 20px 0;">
+							<h3 style="font-size: 2em; margin-bottom: 20px;">🎉 Quiz terminé ! 🎉</h3>
+							<p id="scoreText" style="font-size: 1.5em;"></p>
+						</div>
+					</div>
+				` 
+			},
+            17: { 
+				type: 'text', 
+				content: `
+					<div style="text-align: center;">
+						<h2>🔐 Message Secret de Noël 🔐</h2>
+						<p style="margin: 20px 0; font-size: 1.1em;">Déchiffre ce message pour découvrir une surprise !</p>
+            
+						<div style="background: #2a1a0a; padding: 20px; border-radius: 10px; margin: 20px 0;">
+							<p style="font-family: 'Courier New', monospace; font-size: 1.2em; color: #ffd700; letter-spacing: 2px; line-height: 1.8;">
+								Ahv shwlwv jdwhdxa<br>
+								gh Qrhö vrqw fdfkhv<br>
+								ghuulhuh od whohylvlrq<br>
+								gh od vdooh gh uhxqlrq
+							</p>
+						</div>
+            
+						<div style="background: #f4e4c1; color: #3a2a1a; padding: 20px; border-radius: 10px; margin: 20px 0;">
+							<h3 style="margin-bottom: 15px;">🔑 Indice : Chiffre de César</h3>
+							<p style="margin-bottom: 10px;">Chaque lettre a été décalée dans l'alphabet.</p>
+							<p style="font-size: 0.9em; font-style: italic;">Exemple : A → D, B → E, C → F...</p>
+                
+							<div style="margin-top: 20px;">
+								<label for="decoder" style="display: block; margin-bottom: 10px; font-weight: bold;">Tape ta réponse :</label>
+								<input type="text" id="decoder" placeholder="Écris le message décodé..." 
+									style="width: 100%; padding: 10px; border: 2px solid #8B0000; border-radius: 5px; font-size: 1em;">
+								<button onclick="window.checkSecretMessage()" 
+										style="margin-top: 15px; background: #8B0000; color: #ffd700; border: none; padding: 12px 30px; border-radius: 8px; cursor: pointer; font-size: 1.1em; font-weight: bold;">
+									Vérifier
+								</button>
+								<div id="secretResult" style="margin-top: 15px; font-weight: bold; font-size: 1.1em;"></div>
+							</div>
+						</div>
+            
+						<details style="margin-top: 20px; background: #2a1a0a; padding: 15px; border-radius: 10px;">
+							<summary style="cursor: pointer; color: #ffd700; font-weight: bold;">💡 Besoin d'aide ?</summary>
+							<p style="margin-top: 10px; color: white;">Remplace chaque lettre par celle qui est 3 positions avant ou après dans l'alphabet.<br>
+							Par exemple : Le A est un D, le E est un H...</p>
+						</details>
+					</div>
+				` 
+			}, // OK NE PAS TOUCHER
+            18: { type: 'youtube', content: 'https://www.youtube.com/embed/hp2XPCfp7lY' }, // OK NE PAS TOUCHER
+            19: { 
+				type: 'text', 
+				content: `
+					<h2>🥮 Recette de biscuits de Noël 🥮</h2>
+        
+					<h3>Pour 8 personnes <h3>
+					<h3>Ingrédients :</h3>
+					<ul>
+						<li>250g de farine</li>
+						<li>125g de beurre mou</li>
+						<li>125g de sucre</li>
+						<li>1 œuf</li>
+						<li>150g de sucre glace</li>
+						<li>1 blanc d'œuf</li>
+						<li>1 pincée de sel</li>
+						<li>1 cuillère à soupe de canelle</li>
+					</ul>
+		
+					<p><strong>Temps de préparation :</strong> 2 heures | <strong>Cuisson :</strong> 12 min</p>
+        
+					<h3>Préparation :</h3>
+					<ol>
+						<li>Verser la farine, le sucre, le sel et la cannelle dans un bol. Ajouter le beurre mou et malaxez du bout des doigts. Ajouter ensuite l’œuf et mélanger jusqu’à obtenir une pâte homogène. Enrouler dans du papier film et laisser reposer au moins une heure au frais.</li>
+						<li>Une fois la pâte reposée, étaler sur une épaisseur d’un demi centimètre et réaliser des motifs de Noël à l’aide d’emporte-pièces et les disposer sur une feuille de papier cuisson. Faire de même jusqu’à ne plus avoir de pâte. </li>
+						<li>Enfourner 10 à 12 min à 180 °C jusqu’à ce que les biscuits se colorent légèrement. Laisser ensuite refroidir jusqu’à total refroidissement.</li>
+						<li>Faire le glaçage royal en mélangeant le blanc d’œuf et le sucre glace. Séparer le glaçage en autant de couleur que vous voulez avoir. Verser du colorant alimentaire afin d’obtenir la couleur désirée.</li>
+						<li>Verser le glaçage dans une poche puis découpez le bout de façon à avoir une petite ouverture. Vous pouvez ensuite décorer vos biscuits comme vous le souhaitez. </li>
+					</ol>
+    ` 
+			}, // OK NE PAS TOUCHER
+            20: { type: 'decorate' }, // OK NE PAS TOUCHER
+            21: { 
+				type: 'text', 
+				content: `
+					<h2 style="text-align: center; margin-bottom: 20px;">✨ Fait intéressant sur les dîners de Noël au Japon ✨</h2>
+					<div style="text-align: left; font-style: italic; line-height: 2; font-size: 1.1em;">
+						Chaque année, le 25 décembre, un grand nombre de Japonais s'assoient à table pour manger un copieux repas de poulet frit KFC, les commandes des clients étant passées au restaurant des mois à l'avance.
+						<br>
+						Cette tradition de Noël est due à une publicité marketing très efficace qui a commencé dans les années 1970. Il a engendré un tout nouvel héritage culinaire de Noël japonais qui a survécu pendant près de cinq décennies. Depuis décembre 1974, quatre ans seulement après l'ouverture du premier magasin KFC au Japon, KFC est la plus grande cuisine de Noël japonaise. Certains prétendent que Takeshi Okawara, le premier directeur de KFC au Japon, a dit un mensonge éhonté et a annoncé leur poulet frit comme un aliment de Noël américain typique pour augmenter les ventes.
+					</div>
+				` 
+			}, // OK NE PAS TOUCHER
+            22: { type: 'image', content: 'https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExczhkN3UyZ2szMGw3NGdldGI4bXo4YWQ5ZTBscW10MWtueG1tbTY5MSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l0MYw0DsFJc0kU0Jq/giphy.gif' }, // OK NE PAS TOUCHER
+            23: { 
+				type: 'text', 
+				content: `
+					<h2 style="text-align: center; margin-bottom: 20px;">✨ Merveilleux Noël ✨</h2>
+					<div style="text-align: center; font-style: italic; line-height: 2; font-size: 1.1em;">
+						Merveilleux Noëls de mon enfance,
+						<br>
+						Avec toute cette effervescence
+						<br>
+						Qui régnait partout dans la maison,
+						<br>
+						Et le sapin plein de décorations !
+						<br>
+						Moments de joie sans pareil,
+						<br>
+						Parés de bonheur et de merveilles ;
+						<br>
+						Maman qui préparait la bûche,
+						<br>
+						Nous qui faisions les truffes
+						<br>
+						Les mains pleines de chocolat,
+						<br>
+						Plus sur nos doigts que dans le plat !
+						<br>
+						Et enfin, la dernière nuit venue
+						<br>
+						Avant le grand jour tant attendu,
+						<br>
+						Le sommeil qui ne veut pas venir,
+						<br>
+						Trop excités pour s'endormir ;
+						<br>
+						Espérer que le Père-Noël va oublier
+						<br>
+						Les bêtises faites pendant l'année,
+						<br>
+						Puis au petit matin, se lever,
+						<br>
+						Et devant nos yeux émerveillés
+						<br>
+						En découvrant les paquets,
+						<br>
+						Nos parents qui souriaient !
+						<br>
+						<br>
+						Je revis ces merveilleux moments
+						<br>
+						Aujourd'hui, avec mes enfants ;
+						<br>
+						Décorer toute la maison
+						<br>
+						De guirlandes en papier crépon,
+						<br>
+						Mettre dans la crèche les santons,
+						<br>
+						Sur le sapin, les boules brillantes
+						<br>
+						Et les guirlandes étincelantes
+						<br>
+						De mille couleurs scintillantes !
+						<br>
+						Préparer avec eux le repas de fête,
+						<br>
+						Sortir les plus belles assiettes,
+						<br>
+						Et à l'approche du jour formidable
+						<br>
+						Les découvrir un peu plus sages,
+						<br>
+						Juste pour que le Père Noël oublie
+						<br>
+						Qu'ils n'ont pas toujours été gentils !
+						<br>
+						Avec le même regard pour mes enfants
+						<br>
+						Qu'avaient jadis pour moi mes parents,
+						<br>
+						Je retrouve chaque année l'instant magique,
+						<br>
+						Quand leurs yeux magnifiques
+						<br>
+						Découvrent sous le sapin,
+						<br>
+						Leurs cadeaux au petit matin ! 🎄
+					</div>
+				` 
+			}, // OK NE PAS TOUCHER
+			24: { type: 'youtube', content: 'https://www.youtube.com/embed/BFvzay3z4RE' }, // OK NE PAS TOUCHER
+			25: { 
+				type: 'text', 
+				content: `
+					<h2 style="text-align: center; margin-bottom: 20px;">🎅 Joyeux Noël ! 🎄</h2>
+					<div style="text-align: center; font-size: 1.2em; line-height: 1.8;">
+						<p>Je vous souhaite un merveilleux Noël !</p>
+						<p>Que cette journée soit remplie de joie, de bonheur et de moments précieux avec vos proches.</p>
+						<p>✨ Profitez bien de cette belle fête ! ✨</p>
+						<br>
+						<img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExNG01Z2FweHg3MWJpNjRrczBpZ2Fzb2l1dDFzeDJtNGMwMXl5bHkydSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/n6WriOzunSG6jslFUC/giphy.gif" 
+							alt="Joyeux Noël" 
+							style="margin-top: 20px; max-width: 100%; border-radius: 10px; box-shadow: 0 0 20px rgba(0,0,0,0.4);">
+					</div>
+				` 
+			}
+			};
+
+        // Grilles de Sudoku pré-configurées (facile)
+        const sudokuPuzzles = {
+            easy: {
+                puzzle: [
+                    [5,3,0,0,7,0,0,0,0],
+                    [6,0,0,1,9,5,0,0,0],
+                    [0,9,8,0,0,0,0,6,0],
+                    [8,0,0,0,6,0,0,0,3],
+                    [4,0,0,8,0,3,0,0,1],
+                    [7,0,0,0,2,0,0,0,6],
+                    [0,6,0,0,0,0,2,8,0],
+                    [0,0,0,4,1,9,0,0,5],
+                    [0,0,0,0,8,0,0,7,9]
+                ],
+                solution: [
+                    [5,3,4,6,7,8,9,1,2],
+                    [6,7,2,1,9,5,3,4,8],
+                    [1,9,8,3,4,2,5,6,7],
+                    [8,5,9,7,6,1,4,2,3],
+                    [4,2,6,8,5,3,7,9,1],
+                    [7,1,3,9,2,4,8,5,6],
+                    [9,6,1,5,3,7,2,8,4],
+                    [2,8,7,4,1,9,6,3,5],
+                    [3,4,5,2,8,6,1,7,9]
+                ]
+            }
+        };
+
+        let currentSudoku = null;
+
+        // Créer les flocons de neige
+        function createSnowflakes() {
+            const snow = document.getElementById('snow');
+            for (let i = 0; i < 50; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.innerHTML = '❄';
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowflake.style.opacity = Math.random();
+                snow.appendChild(snowflake);
+            }
+        }
+
+        // Obtenir la date actuelle (pour tester, vous pouvez changer cette valeur)
+        function getCurrentDay() {
+            const now = new Date();
+            // Pour tester, décommentez la ligne suivante et changez le jour
+            // return 10; 
+            return now.getMonth() === 10 ? now.getDate() : 0;
+        }
+
+        // Charger l'état sauvegardé
+        const openedDays = JSON.parse(localStorage.getItem('adventOpenedDays') || '[]');
+
+        // Créer le calendrier
+        function createCalendar() {
+            const calendar = document.getElementById('calendar');
+            const currentDay = getCurrentDay();
+            
+            for (let i = 1; i <= 25; i++) {
+                const dayBox = document.createElement('div');
+                dayBox.className = 'day-box';
+                
+                const isLocked = i > currentDay;
+                const isOpened = openedDays.includes(i);
+                
+                if (isLocked) {
+                    dayBox.classList.add('locked');
+                    dayBox.innerHTML = `
+                        <div class="day-number">${i}</div>
+                        <div class="lock-icon">🔒</div>
+                    `;
+                } else if (isOpened) {
+                    dayBox.classList.add('opened');
+                    dayBox.innerHTML = `
+                        <div class="opened-content">🎁</div>
+                    `;
+                } else {
+                    dayBox.innerHTML = `<div class="day-number">${i}</div>`;
+                }
+                
+                if (!isLocked) {
+                    dayBox.onclick = () => openDay(i, dayBox);
+                }
+                
+                calendar.appendChild(dayBox);
+            }
+        }
+
+        // Créer le Sudoku
+        function createSudoku(difficulty) {
+            const puzzle = sudokuPuzzles[difficulty];
+            currentSudoku = {
+                puzzle: puzzle.puzzle,
+                solution: puzzle.solution,
+                userGrid: puzzle.puzzle.map(row => [...row])
+            };
+
+            let html = '<div class="sudoku-container">';
+            html += '<h2>🎄 Sudoku de Noël - Niveau Facile 🎄</h2>';
+            html += '<p style="color: #3a2a1a; margin-bottom: 15px;">Remplissez la grille avec les chiffres de 1 à 9</p>';
+            html += '<div class="sudoku-grid">';
+
+            for (let row = 0; row < 9; row++) {
+                for (let col = 0; col < 9; col++) {
+                    const value = puzzle.puzzle[row][col];
+                    const isFixed = value !== 0;
+                    
+                    html += `<input type="text" 
+                        class="sudoku-cell" 
+                        id="cell-${row}-${col}"
+                        maxlength="1"
+                        ${isFixed ? 'disabled' : ''}
+                        value="${isFixed ? value : ''}"
+                        data-row="${row}"
+                        data-col="${col}"
+                        onkeypress="return /[1-9]/.test(event.key)"
+                        oninput="updateSudokuCell(${row}, ${col}, this.value)">`;
+                }
+            }
+
+            html += '</div>';
+            html += '<div class="sudoku-buttons">';
+            html += '<button class="sudoku-btn" onclick="checkSudoku()">Vérifier</button>';
+            html += '<button class="sudoku-btn" onclick="resetSudoku()">Recommencer</button>';
+            html += '<button class="sudoku-btn" onclick="solveSudoku()">Solution</button>';
+            html += '</div>';
+            html += '<div class="sudoku-message" id="sudokuMessage"></div>';
+            html += '</div>';
+
+            return html;
+        }
+
+        // Mettre à jour une cellule
+        function updateSudokuCell(row, col, value) {
+            if (currentSudoku) {
+                currentSudoku.userGrid[row][col] = value ? parseInt(value) : 0;
+            }
+        }
+
+        // Vérifier le Sudoku
+        function checkSudoku() {
+            if (!currentSudoku) return;
+
+            let correct = true;
+            let complete = true;
+
+            for (let row = 0; row < 9; row++) {
+                for (let col = 0; col < 9; col++) {
+                    const cell = document.getElementById(`cell-${row}-${col}`);
+                    if (cell.disabled) continue;
+
+                    const userValue = currentSudoku.userGrid[row][col];
+                    const correctValue = currentSudoku.solution[row][col];
+
+                    if (userValue === 0) {
+                        complete = false;
+                        cell.classList.remove('error', 'correct');
+                    } else if (userValue === correctValue) {
+                        cell.classList.remove('error');
+                        cell.classList.add('correct');
+                    } else {
+                        cell.classList.remove('correct');
+                        cell.classList.add('error');
+                        correct = false;
+                    }
+                }
+            }
+
+            const message = document.getElementById('sudokuMessage');
+            if (complete && correct) {
+                message.textContent = '🎉 Bravo ! Vous avez résolu le Sudoku ! 🎉';
+                message.className = 'sudoku-message success';
+            } else if (!complete) {
+                message.textContent = 'Il reste des cases à remplir...';
+                message.className = 'sudoku-message';
+            } else {
+                message.textContent = 'Il y a des erreurs. Réessayez !';
+                message.className = 'sudoku-message error';
+            }
+        }
+
+        // Recommencer le Sudoku
+        function resetSudoku() {
+            if (!currentSudoku) return;
+
+            for (let row = 0; row < 9; row++) {
+                for (let col = 0; col < 9; col++) {
+                    const cell = document.getElementById(`cell-${row}-${col}`);
+                    if (!cell.disabled) {
+                        cell.value = '';
+                        cell.classList.remove('error', 'correct');
+                        currentSudoku.userGrid[row][col] = 0;
+                    }
+                }
+            }
+
+            const message = document.getElementById('sudokuMessage');
+            message.textContent = '';
+            message.className = 'sudoku-message';
+        }
+
+        // Afficher la solution
+        function solveSudoku() {
+            if (!currentSudoku) return;
+
+            for (let row = 0; row < 9; row++) {
+                for (let col = 0; col < 9; col++) {
+                    const cell = document.getElementById(`cell-${row}-${col}`);
+                    if (!cell.disabled) {
+                        cell.value = currentSudoku.solution[row][col];
+                        cell.classList.remove('error');
+                        cell.classList.add('correct');
+                        currentSudoku.userGrid[row][col] = currentSudoku.solution[row][col];
+                    }
+                }
+            }
+
+            const message = document.getElementById('sudokuMessage');
+            message.textContent = '✨ Voici la solution complète ! ✨';
+            message.className = 'sudoku-message success';
+        }
+
+        // Ouvrir une case
+        function openDay(day, element) {
+			const content = dayContents[day];
+			if (!content) {
+				alert(`Aucun contenu défini pour le jour ${day}`);
+				return;
+			}
+			const modal = document.getElementById('modal');
+			const modalBody = document.getElementById('modalBody');
+        
+			if (!openedDays.includes(day)) {
+				openedDays.push(day);
+				localStorage.setItem('adventOpenedDays', JSON.stringify(openedDays));
+			}
+        
+			element.classList.add('opened');
+			element.innerHTML = '<div class="opened-content">🎁</div>';
+        
+			if (content.type === 'sudoku') {
+				modalBody.innerHTML = createSudoku(content.difficulty);
+			} else if (content.type === 'text') {
+				modalBody.innerHTML = `<div class="parchment"><h2>Jour ${day}</h2><p>${content.content}</p></div>`;
+			} else if (content.type === 'image') {
+				const captionHtml = content.caption ? `<p style="color: #ffd700; margin-top: 15px; text-align: center; font-size: 1.2em;">${content.caption}</p>` : '';
+				modalBody.innerHTML = `
+					<h2 style="color: #ffd700; margin-bottom: 20px;">Jour ${day}</h2>
+					<img src="${content.content}" alt="Image du jour ${day}">
+					${captionHtml}
+				`;
+			} else if (content.type === 'video') {
+				modalBody.innerHTML = `<h2 style="color: #ffd700; margin-bottom: 20px;">Jour ${day}</h2><video controls autoplay><source src="${content.content}" type="video/mp4"></video>`;
+			} else if (content.type === 'youtube') {
+				// Ajout de ?autoplay=1 à l'URL pour lancer la vidéo automatiquement
+				const autoplayUrl = content.content.includes('?')
+					? `${content.content}&autoplay=1`
+					: `${content.content}?autoplay=1`;
+
+				modalBody.innerHTML = `
+					<h2 style="color: #ffd700; margin-bottom: 20px;">Jour ${day}</h2>
+					<iframe
+						width="100%"
+						height="500"
+						src="${autoplayUrl}"
+						title="Vidéo du jour ${day}"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+						referrerpolicy="strict-origin-when-cross-origin"
+						allowfullscreen
+						style="border-radius: 10px;">
+					</iframe>
+				`;
+			} else if (content.type === 'bells') {
+				modalBody.innerHTML = `
+					<div class="bells-container">
+						<h2 style="color:#ffd700; text-align:center; margin-bottom:20px;">🔔 Jeu musical de Noël 🔔</h2>
+						<p style="text-align:center; color:white; margin-bottom:15px;">Clique sur les cloches pour rejouer la mélodie "Jingle Bells" 🎶</p>
+						<div class="bells-grid">
+							<button class="bell" data-note="C">🔔</button>
+							<button class="bell" data-note="D">🔔</button>
+							<button class="bell" data-note="E">🔔</button>
+							<button class="bell" data-note="F">🔔</button>
+							<button class="bell" data-note="G">🔔</button>
+							<button class="bell" data-note="A">🔔</button>
+							<button class="bell" data-note="B">🔔</button>
+						</div>
+						<div id="bellMessage" style="text-align:center; color:#ffd700; margin-top:20px; font-weight:bold;"></div>
+					</div>
+				`;
+
+				// Utilisation de fréquences pour créer des sons de cloche synthétiques
+				const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+	
+				function playBellNote(frequency) {
+					const oscillator1 = audioContext.createOscillator();
+					const oscillator2 = audioContext.createOscillator();
+					const oscillator3 = audioContext.createOscillator();
+					const gainNode = audioContext.createGain();
+    
+					// Création d'harmoniques pour un son de cloche
+					oscillator1.connect(gainNode);
+					oscillator2.connect(gainNode);
+					oscillator3.connect(gainNode);
+					gainNode.connect(audioContext.destination);
+    
+					// Fréquence fondamentale + harmoniques caractéristiques des cloches
+					oscillator1.frequency.value = frequency;
+					oscillator2.frequency.value = frequency * 2.4;  // Harmonique spécifique aux cloches
+					oscillator3.frequency.value = frequency * 3.8;  // Harmonique secondaire
+    
+					// Types d'ondes pour un son métallique
+					oscillator1.type = 'sine';
+					oscillator2.type = 'sine';
+					oscillator3.type = 'triangle';
+    
+					// Enveloppe sonore : attaque rapide, déclin lent (typique d'une cloche)
+					gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+					gainNode.gain.linearRampToValueAtTime(0.4, audioContext.currentTime + 0.01);  // Attaque rapide
+					gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 2);  // Déclin lent
+    
+					oscillator1.start(audioContext.currentTime);
+					oscillator2.start(audioContext.currentTime);
+					oscillator3.start(audioContext.currentTime);
+    
+					oscillator1.stop(audioContext.currentTime + 2);
+					oscillator2.stop(audioContext.currentTime + 2);
+					oscillator3.stop(audioContext.currentTime + 2);
+				}
+	
+				const notes = {
+					C: 261.63,  // Do
+					D: 293.66,  // Ré
+					E: 329.63,  // Mi
+					F: 349.23,  // Fa
+					G: 392.00,  // Sol
+					A: 440.00,  // La
+					B: 493.88   // Si
+				};
+
+				const sequence = ['E', 'E', 'E', 'E', 'E', 'E', 'E', 'G', 'C', 'D', 'E']; // Jingle Bells (simplifiée)
+				let userSequence = [];
+
+				document.querySelectorAll('.bell').forEach(bell => {
+					bell.addEventListener('click', () => {
+						const note = bell.dataset.note;
+						const msg = document.getElementById('bellMessage');
+
+						// 🔄 Efface le message dès qu'une nouvelle tentative commence
+						if (userSequence.length === 0) {
+							msg.textContent = '';
+						}
+
+						playBellNote(notes[note]);
+						bell.classList.add('active');
+						setTimeout(() => bell.classList.remove('active'), 200);
+
+						userSequence.push(note);
+
+						if (userSequence.length === sequence.length) {
+							const correct = sequence.every((n, i) => n === userSequence[i]);
+							if (correct) {
+								msg.textContent = '🎶 Bravo ! Tu as rejoué "Jingle Bells" ! 🎅';
+							} else {
+								msg.textContent = 'Essaie encore !';
+							}
+							userSequence = [];
+						}
+					});
+				});
+			} else if (content.type === 'decorate') {
+				modalBody.innerHTML = `
+					<div class="decorate-container">
+						<h2 style="color:#ffd700; text-align:center; margin-bottom:20px;">🎄 Décore ton sapin 🎄</h2>
+						<p style="text-align:center; color:white; margin-bottom:15px;">Glisse les décorations sur le sapin !</p>
+						<div class="tree-zone">
+							<svg id="tree" viewBox="0 0 200 250" style="width: 100%; height: 100%;">
+								<!-- Tronc -->
+								<rect x="85" y="200" width="30" height="40" fill="#8B4513"/>
+								<!-- Triangles du sapin (vert foncé pour un sapin nu) -->
+								<polygon points="100,20 40,90 160,90" fill="#0d5e0d"/>
+								<polygon points="100,70 30,140 170,140" fill="#0d5e0d"/>
+								<polygon points="100,120 20,200 180,200" fill="#0d5e0d"/>
+							</svg>
+						</div>
+						<div class="ornaments">
+							<div draggable="true" class="ornament" data-emoji="🔴" style="font-size: 35px; cursor: grab;">🔴</div>
+							<div draggable="true" class="ornament" data-emoji="⭐" style="font-size: 35px; cursor: grab;">⭐</div>
+							<div draggable="true" class="ornament" data-emoji="🎁" style="font-size: 35px; cursor: grab;">🎁</div>
+							<div draggable="true" class="ornament" data-emoji="🔔" style="font-size: 35px; cursor: grab;">🔔</div>
+							<div draggable="true" class="ornament" data-emoji="❄️" style="font-size: 35px; cursor: grab;">❄️</div>
+							<div draggable="true" class="ornament" data-emoji="🎀" style="font-size: 35px; cursor: grab;">🎀</div>
+						</div>
+					</div>
+				`;
+				const treeZone = document.querySelector('.tree-zone');
+				const ornaments = document.querySelectorAll('.ornament');
+				ornaments.forEach(orn => {
+					orn.addEventListener('dragstart', e => {
+						e.dataTransfer.effectAllowed = 'copy';
+						e.dataTransfer.setData('text/plain', e.target.dataset.emoji);
+				});
+				});
+				treeZone.addEventListener('dragover', e => {
+					e.preventDefault();
+					e.dataTransfer.dropEffect = 'copy';
+				});
+				treeZone.addEventListener('drop', e => {
+					e.preventDefault();
+					const emoji = e.dataTransfer.getData('text/plain');
+					const span = document.createElement('span');
+					span.textContent = emoji;
+					span.className = 'placed';
+					span.style.position = 'absolute';
+					const rect = treeZone.getBoundingClientRect();
+					span.style.left = (e.clientX - rect.left - 25) + 'px';
+					span.style.top = (e.clientY - rect.top - 25) + 'px';
+					span.style.fontSize = '35px';
+					treeZone.appendChild(span);
+				});
+			}
+			
+			// Gestion spéciale pour le quiz du jour 16
+			if (day === 16) {
+					// Gestion spéciale pour le quiz du jour 16
+					modalBody.innerHTML = content.content;
+    
+					setTimeout(() => {
+						const questions = [
+							{
+								question: "1. Quel est l'ingrédient principal du pain au chocolat?",
+								answers: ["Le chocolat", "Le gruyère", "La fraise", "Les amandes"],
+								correct: 0
+							},
+							{
+								question: "2. Selon les légendes, quelle était la première couleur du costume du père noël en Angleterre?",
+								answers: ["En rouge et blanc", "En jaune ou en bleu", "En rouge et noir,, j'exilerai ma peur ;J'irai plus haut que ces montagnes de douleur.... (Merci Jeanne MAS)", "En vert ou en brun"],
+								correct: 3
+							},
+							{
+								question: "3. Quelle parole figure dans la chanson de Rick ASTLEY?",
+								answers: ["Never gonna give you up", "Never gonna let you down", "Never gonna run around and desert you", "Toutes (et maintenant, j'ai la chanson dans la tête 😡)"],
+								correct: 3
+							},
+							{
+								question: "4. Combien de rennes tirent le traineau du père noël?",
+								answers: ["7", "8", "9", "12 754"],
+								correct: 2
+							},
+							{
+								question: "5. Qui est le meilleur parmi les personnes suivantes:",
+								answers: ["David", "David", "David", "David"],
+								correct: -1, // Pas de bonne réponse!
+								trollMessage: "Bande de coquins, bien tenté(e)s.... La bonne réponse était Chuck Norris"
+							}
+						];
+        
+						let currentQuestion = 0;
+						let score = 0;
+						let answered = false;
+        
+						const questionEl = document.getElementById('question');
+						const answersEl = document.getElementById('answers');
+						const resultEl = document.getElementById('quizResult');
+						const nextBtn = document.getElementById('nextBtn');
+						const finalScoreEl = document.getElementById('finalScore');
+						const scoreTextEl = document.getElementById('scoreText');
+        
+						function loadQuestion() {
+							answered = false;
+							resultEl.innerHTML = '';
+							nextBtn.style.display = 'none';
+            
+							const q = questions[currentQuestion];
+							questionEl.textContent = q.question;
+							answersEl.innerHTML = '';
+            
+							q.answers.forEach((answer, index) => {
+								const button = document.createElement('button');
+								button.textContent = answer;
+								button.style.cssText = 'background: white; color: #3a2a1a; border: 2px solid #8B0000; padding: 15px; border-radius: 8px; cursor: pointer; font-size: 1.1em; transition: all 0.3s;';
+                
+								button.onmouseover = () => {
+									if (!answered) button.style.background = '#ffeecc';
+								};
+								button.onmouseout = () => {
+									if (!answered) button.style.background = 'white';
+								};
+                
+								button.onclick = () => checkAnswer(index, button);
+								answersEl.appendChild(button);
+							});
+						}
+        
+						function checkAnswer(selected, button) {
+							if (answered) return;
+							answered = true;
+            
+							const q = questions[currentQuestion];
+							const buttons = answersEl.querySelectorAll('button');
+            
+							// Question 5 : troll
+							if (currentQuestion === 4) {
+								button.style.background = '#ffcccc';
+								button.style.borderColor = '#cc0000';
+								resultEl.innerHTML = q.trollMessage;
+								resultEl.style.color = '#8B0000';
+							} else if (selected === q.correct) {
+								score++;
+								button.style.background = '#ccffcc';
+								button.style.borderColor = '#00cc00';
+								resultEl.innerHTML = '✅ Bonne réponse !';
+								resultEl.style.color = '#2d5016';
+							} else {
+								button.style.background = '#ffcccc';
+								button.style.borderColor = '#cc0000';
+								buttons[q.correct].style.background = '#ccffcc';
+								buttons[q.correct].style.borderColor = '#00cc00';
+								resultEl.innerHTML = '❌ Mauvaise réponse !';
+								resultEl.style.color = '#8B0000';
+							}
+            
+							// Désactiver tous les boutons
+							buttons.forEach(btn => btn.style.cursor = 'not-allowed');
+            
+							if (currentQuestion < questions.length - 1) {
+								nextBtn.style.display = 'inline-block';
+							} else {
+								showFinalScore();
+							}
+						}
+        
+						function showFinalScore() {
+							setTimeout(() => {
+								document.getElementById('quizContainer').style.display = 'none';
+								finalScoreEl.style.display = 'block';
+								scoreTextEl.textContent = `Tu as obtenu ${score} sur ${questions.length - 1} ! 🎄`;
+                
+								if (score === 4) {
+									scoreTextEl.innerHTML += '<br><br>🌟 Parfait ! Tu es un expert de Noël ! 🌟';
+								} else if (score >= 2) {
+									scoreTextEl.innerHTML += '<br><br>👍 Pas mal du tout !';
+								} else {
+									scoreTextEl.innerHTML += '<br><br>🎅 Dommage, bien tenté(e), peut-être une prochaine fois !';
+								}
+							}, 2000);
+						}
+        
+						nextBtn.onclick = () => {
+							currentQuestion++;
+							loadQuestion();
+						};
+        
+						loadQuestion();
+					}, 100);
+				} // ←❗ on referme bien le else if (day === 16)
+        
+				modal.style.display = 'block';
+			}
+		
+		// Fonction pour vérifier le message secret du jour 17
+				window.checkSecretMessage = function() {
+					const input = document.getElementById('decoder').value.toLowerCase().trim();
+					const solution = "des petits gâteaux de noël sont cachés derrière la télévision de la salle de réunion";
+					const result = document.getElementById('secretResult');
+    
+				// Normaliser les accents pour la comparaison
+					const normalize = (str) => str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z]/g, '');
+
+					if (normalize(input) === normalize(solution)) {
+						result.innerHTML = '🎉 Bravo ! Tu as décodé le message ! Cours vite chercher ta surprise ! 🍪✨';
+						result.style.color = '#2d5016';
+					} else if (input.length > 10) {
+						result.innerHTML = '❌ Pas tout à fait... Réessaye ! Vérifie bien chaque lettre.';
+						result.style.color = '#8B0000';
+					} else {
+						result.innerHTML = '';
+					}
+				}
+
+				// Permettre de valider avec la touche Entrée
+				document.addEventListener('keypress', function(e) {
+					if (e.key === 'Enter' && document.getElementById('decoder')) {
+						window.checkSecretMessage();
+					}
+				});	
+
+        // Fermer la modal
+        function closeModal() {
+			const modal = document.getElementById('modal');
+			const modalBody = document.getElementById('modalBody');
+
+			// 🔧 Stopper toute vidéo en supprimant le contenu de la modale
+			modalBody.innerHTML = '';
+
+			// 🔧 Masquer la modale
+			modal.style.display = 'none';
+		}
+
+        // Fermer avec Echap
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        // Initialisation
+        createSnowflakes();
+        createCalendar();
+    </script>
+</body>
+</html>

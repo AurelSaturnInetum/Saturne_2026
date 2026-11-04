@@ -197,12 +197,23 @@ const D={
 3:['mem','Memory des cadeaux',6],
 4:['yt','La vidéo du jour','27JZMgLZjj0','Petite légende sous la vidéo'],
 5:['catch','Attrape les flocons',10],
-6:['quiz','Quiz des rennes','Comment s\'appelle le renne au nez rouge ?',['Comète','Éclair','Rudolph'],2],
+6:['quiz10','Grand Quiz de Noël',[
+    {q:'Quel mois célèbre-t-on Noël ?',o:['Novembre','Décembre','Janvier'],a:1},
+    {q:'Qui apporte traditionnellement les cadeaux ?',o:['Le lapin de Pâques','Le Père Noël','Un lutin'],a:1},
+    {q:'De quelle couleur est le nez de Rudolph ?',o:['Rouge','Vert','Bleu'],a:0},
+    {q:'Quel arbre décore-t-on pour Noël ?',o:['Un chêne','Un sapin','Un palmier'],a:1},
+    {q:'Quelle boisson chaude apprécie-t-on à Noël ?',o:['Du jus de tomate','De la limonade','Du chocolat chaud'],a:2},
+    {q:'Quel jour fête-t-on le réveillon de Noël ?',o:['Le 24 décembre','Le 25 décembre','Le 31 décembre'],a:0},
+    {q:'Quels animaux tirent le traîneau du Père Noël ?',o:['Des chevaux','Des rennes','Des moutons'],a:1},
+    {q:'Quel dessert mange-t-on traditionnellement à Noël ?',o:['Une bûche','Une crêpe','Un éclair'],a:0},
+    {q:'Comment s’appelle le personnage de la chanson « Petit Papa Noël » ?',o:['Le marchand de sable','Le bonhomme de neige','Le Père Noël'],a:2},
+    {q:'Sous quelle plante s’embrasse-t-on à Noël ?',o:['Le cactus','Le gui','Le laurier'],a:1}
+]],
 7:['rec','Chocolat chaud épicé','☕',['50 cl de lait','100 g de chocolat noir','1 bâton de cannelle','1 pincée de piment doux','Chamallows'],['Chauffe le lait avec la cannelle.','Ajoute le chocolat en morceaux et fouette.','Verse dans une tasse, ajoute les chamallows.']],
 8:['mem','Memory des lutins',6],
 9:['fun','Le savais-tu ?','🎅',['Le Père Noël a plusieurs noms','Santa Claus, Papá Noel, Babbo Natale… selon les pays, il porte un nom différent !']],
 10:['quiz','Quiz des sapins','Quel pays offre chaque année le grand sapin de Trafalgar Square à Londres ?',['La Norvège','L\'Italie','Le Canada'],0],
-11:['catch','Flocons express',12],
+11:['yt','La vidéo du jour','5DjOL2we8ko','Petite légende sous la vidéo'],
 12:['rec','Pain d\'épices maison','🍞',['250 g de farine','200 g de miel','1 sachet de levure','2 c. à c. d\'épices à pain d\'épices','10 cl de lait'],['Fais tiédir le miel avec le lait.','Mélange avec la farine, la levure et les épices.','Verse dans un moule beurré.','Cuis 40 min à 160 °C.']],
 13:['mem','Memory de Noël',8],
 14:['quiz','Quiz gourmand','Quel dessert traditionnel trouve-t-on sur la table de Noël en France ?',['La galette','La bûche','Le paris-brest'],1],
@@ -210,7 +221,7 @@ const D={
 16:['rec','Pomme-cannelle chaude','🍎',['1 l de jus de pomme','2 bâtons de cannelle','3 clous de girofle','1 orange en rondelles'],['Mets tout dans une casserole.','Chauffe doucement 10 min sans bouillir.','Sers dans de jolis verres.']],
 17:['catch','Tempête de flocons',14],
 18:['quiz','Quiz du traîneau','Combien de rennes tirent le traîneau, Rudolph non compris, selon la chanson ?',['Huit','Six','Douze'],0],
-19:['mem','Memory difficile',8],
+19:['yt','La vidéo du jour','uqUnsryg-R0','Petite légende sous la vidéo'],
 20:['rec','Truffes au chocolat','🍫',['200 g de chocolat noir','10 cl de crème liquide','Cacao en poudre'],['Fais chauffer la crème et verse-la sur le chocolat.','Mélange, puis laisse prendre au frais 2 h.','Forme des boules et roule-les dans le cacao.']],
 21:['fun','Le plus long soir','🌙',['Solstice d\'hiver','C\'est la nuit la plus longue de l\'année. À partir de demain, les jours rallongent !']],
 22:['quiz','Quiz du baiser','Sous quelle plante s\'embrasse-t-on à Noël ?',['Le houx','Le gui','Le lierre'],1],
@@ -270,6 +281,112 @@ if(T==='vid'){if(playing)MUS.pause();add('<video src="'+x[2]+'" autoplay playsin
     if(open1.textContent===e){pairs++;open1=null;if(pairs===x[2])$('#fb').textContent='Bravo, en '+moves+' coups ! 🎉'}
     else{lock=true;const a=open1;open1=null;setTimeout(()=>{[a,b].forEach(k=>{k.textContent='❓';k.classList.remove('up')});lock=false},750)}};
    $('#g').appendChild(b)})}
+  
+if(T==='quiz10'){
+    const questions=x[2];
+    let numero=0;
+    let score=0;
+    let repondu=false;
+
+    add(`
+        <p id="qprogress" style="text-align:center;font-weight:bold">
+            Question 1 / 10
+        </p>
+        <div style="background:#e6d8bd;border-radius:20px;height:12px;overflow:hidden;margin:10px 0">
+            <div id="qbar" style="height:100%;width:10%;background:#1f5a3d;transition:width .3s"></div>
+        </div>
+        <h3 id="qtitle" style="text-align:center"></h3>
+        <div id="q"></div>
+        <p id="fb" aria-live="polite" style="text-align:center;font-weight:bold"></p>
+        <div id="qresult" style="display:none;text-align:center">
+            <div class="big">🎄🏆🎁</div>
+            <h3 id="qscore"></h3>
+            <p id="qmessage"></p>
+        </div>
+        <div style="text-align:center">
+            <button id="qnext" class="b" style="display:none">
+                Question suivante ➜
+            </button>
+        </div>
+    `);
+
+    function afficherQuestion(){
+        repondu=false;
+
+        const question=questions[numero];
+        $('#qprogress').textContent='Question '+(numero+1)+' / 10';
+        $('#qbar').style.width=((numero+1)*10)+'%';
+        $('#qtitle').textContent=question.q;
+        $('#fb').textContent='';
+        $('#q').innerHTML='';
+        $('#qnext').style.display='none';
+
+        question.o.forEach((reponse,i)=>{
+            const bouton=document.createElement('button');
+            bouton.className='b';
+            bouton.textContent=reponse;
+            bouton.style.display='block';
+            bouton.style.width='100%';
+
+            bouton.onclick=()=>{
+                if(repondu)return;
+                repondu=true;
+
+                const boutons=$('#q').children;
+
+                [...boutons].forEach((b,j)=>{
+                    b.disabled=true;
+                    if(j===question.a)b.classList.add('ok');
+                });
+
+                if(i===question.a){
+                    score++;
+                    $('#fb').textContent='🎉 Bravo ! Bonne réponse !';
+                }else{
+                    bouton.classList.add('ko');
+                    $('#fb').textContent='😊 Pas tout à fait ! La bonne réponse est : '+question.o[question.a];
+                }
+
+                $('#qnext').textContent=
+                    numero===9?'Découvrir mon résultat 🏆':'Question suivante ➜';
+
+                $('#qnext').style.display='inline-block';
+            };
+
+            $('#q').appendChild(bouton);
+        });
+    }
+
+    $('#qnext').onclick=()=>{
+        if(numero<9){
+            numero++;
+            afficherQuestion();
+        }else{
+            $('#qprogress').style.display='none';
+            $('#qbar').parentElement.style.display='none';
+            $('#qtitle').style.display='none';
+            $('#q').style.display='none';
+            $('#fb').style.display='none';
+            $('#qnext').style.display='none';
+
+            $('#qresult').style.display='block';
+            $('#qscore').textContent='Ton score : '+score+' / 10';
+
+            if(score===10){
+                $('#qmessage').textContent='Incroyable ! Tu es un véritable expert de Noël ! 🎅';
+            }else if(score>=7){
+                $('#qmessage').textContent='Excellent ! Tu connais très bien Noël ! 🎄';
+            }else if(score>=4){
+                $('#qmessage').textContent='Pas mal du tout ! Le Père Noël est fier de toi ! 🎁';
+            }else{
+                $('#qmessage').textContent='Il reste quelques secrets de Noël à découvrir ! 😊';
+            }
+        }
+    };
+
+    afficherQuestion();
+}
+ 
  if(T==='catch'){add('<p>Attrape '+x[2]+' flocons avant qu\'ils fondent ! Score : <b id="sc">0</b></p><div id="zone"></div><p id="fb" aria-live="polite"></p>');
   let s=0,iv=setInterval(()=>{if(s>=x[2])return;const z=$('#zone');if(!z)return;const b=document.createElement('button');b.textContent='❄️';
    b.setAttribute('aria-label','flocon');b.style.left=Math.random()*80+'%';b.style.top=Math.random()*75+'%';

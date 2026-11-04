@@ -56,6 +56,49 @@ svg{display:block;width:100%;height:auto;max-width:100%}
 #wmHit,#whHit{cursor:pointer}#wmHit:hover,#whHit:hover{fill:rgba(255,240,180,.14)}#wmHit:focus,#whHit:focus{outline:none}
 #skHit{cursor:pointer}#skHit:hover{fill:rgba(200,235,255,.14)}#skHit:focus{outline:none}
 #smHit{cursor:pointer}#smHit:hover{fill:rgba(255,240,180,.14)}#smHit:focus{outline:none}
+/* ---------- Jour 23 : questionnaire troll ---------- */
+.tq-eyebrow{font-family:'Courier New',monospace;letter-spacing:.12em;text-transform:uppercase;font-size:12px;opacity:.7;margin:0 0 6px}
+.tq-progress{display:flex;gap:6px;margin:12px 0 22px}
+.tq-progress span{height:5px;flex:1;background:rgba(127,127,127,.3);border-radius:3px}
+.tq-progress span.done{background:var(--red)}
+.tq-q{display:none}.tq-q.active{display:block}
+.tq-text{font-size:18px;line-height:1.4;margin:0 0 22px;font-weight:700}
+.tq-btn{font:inherit;font-weight:700;border:0;border-radius:999px;padding:12px 24px;cursor:pointer;transition:transform .15s}
+.tq-oui{background:#3ddc97;color:#0c2c20}.tq-oui:hover{transform:scale(1.05)}
+.tq-non{background:var(--red);color:#fff;position:absolute;top:0;left:0;transition:top .12s ease-out,left .12s ease-out}
+.tq-swap{background:var(--path);color:var(--ink);min-width:100px}
+.tq-zone{display:flex;flex-direction:column;align-items:center;gap:16px}
+.tq-nonzone{position:relative;width:100%;height:130px}
+.tq-hint{font-size:12px;opacity:.7;margin-top:14px}
+.tq-stars{display:flex;gap:12px;justify-content:center;margin:6px 0 18px}
+.tq-sw{display:flex;flex-direction:column;align-items:center;gap:6px}
+.tq-star{font-size:38px;line-height:1;cursor:pointer;color:rgba(127,127,127,.4);user-select:none;transition:color .15s,transform .1s}
+.tq-star.filled{color:var(--gold)}.tq-star:hover{transform:scale(1.15)}
+.tq-num{font-family:'Courier New',monospace;font-size:13px;opacity:.8}
+.tq-num.forced{color:var(--red);font-weight:700;opacity:1}
+.tq-msg{text-align:center;font-family:'Courier New',monospace;font-size:13px;color:var(--red);min-height:18px;margin:0 0 10px}
+.tq-row{display:flex;gap:16px;justify-content:center;align-items:center;flex-wrap:wrap}
+.tq-next{background:#3ddc97;color:#0c2c20;opacity:.4;pointer-events:none}
+.tq-next.ready{opacity:1;pointer-events:auto}
+.tq-slider{width:100%;accent-color:var(--red)}
+.tq-val{font-family:'Courier New',monospace;font-size:30px;font-weight:700;text-align:center;color:var(--gold);transition:color .2s,transform .2s}
+.tq-val.snapped{color:var(--red);transform:scale(1.15)}
+.tq-checks{display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.tq-checks label{display:flex;align-items:center;gap:10px;cursor:pointer}
+.tq-checks input{width:18px;height:18px;accent-color:#3ddc97}
+.tq-hl{position:relative;display:inline-flex;padding:24px}
+.tq-arrow{position:absolute;font-size:20px;color:var(--gold);text-shadow:0 0 6px var(--gold),0 0 14px var(--red);animation:tqBlink .9s infinite;pointer-events:none}
+@keyframes tqBlink{0%,40%{opacity:1}50%,90%{opacity:.15}100%{opacity:1}}
+.tq-a1{top:-4px;left:50%;margin-left:-8px;transform:rotate(90deg)}
+.tq-a2{bottom:-4px;left:50%;margin-left:-8px;transform:rotate(-90deg);animation-delay:.15s}
+.tq-a3{left:-2px;top:50%;margin-top:-12px;animation-delay:.3s}
+.tq-a4{right:-2px;top:50%;margin-top:-12px;transform:rotate(180deg);animation-delay:.45s}
+.tq-modal{position:fixed;inset:0;background:rgba(10,7,18,.75);display:none;align-items:center;justify-content:center;z-index:20;padding:20px}
+.tq-modal.on{display:flex}
+.tq-modal div{background:var(--card);border:3px solid var(--green);border-radius:16px;padding:26px 22px;max-width:340px;text-align:center}
+.tq-modal p{margin:0 0 20px}
+.tq-end{text-align:center;padding-top:10px}.tq-end .big{letter-spacing:0}
+.tq-restart{margin-top:16px;background:transparent;border:1px solid currentColor;opacity:.7;font:inherit;font-size:12px;padding:8px 16px;border-radius:999px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -225,7 +268,7 @@ const D={
 20:['rec','Truffes au chocolat','🍫',['200 g de chocolat noir','10 cl de crème liquide','Cacao en poudre'],['Fais chauffer la crème et verse-la sur le chocolat.','Mélange, puis laisse prendre au frais 2 h.','Forme des boules et roule-les dans le cacao.']],
 21:['fun','Le plus long soir','🌙',['Solstice d\'hiver','C\'est la nuit la plus longue de l\'année. À partir de demain, les jours rallongent !']],
 22:['quiz','Quiz du baiser','Sous quelle plante s\'embrasse-t-on à Noël ?',['Le houx','Le gui','Le lierre'],1],
-23:['mem','Dernier memory',8],
+23:['troll','Questionnaire de satisfaction'],
 24:['fun','Joyeux Noël !','🎄✨🎁',['La veille de Noël','Tu as ouvert toutes les cases. Que cette fête soit pleine de lumière et de gâteaux !']]};
 
 const sh=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
@@ -387,7 +430,152 @@ if(T==='quiz10'){
 
     afficherQuestion();
 }
- 
+  if(T==='troll'){
+  const q=s=>el.querySelector(s),qa=s=>[...el.querySelectorAll(s)];
+  add(`
+   <p class="tq-eyebrow">Enquête de satisfaction — 6 questions</p>
+   <h3 style="margin:0 0 4px">On a juste besoin de 2 minutes 😇</h3>
+   <div class="tq-progress">${'<span></span>'.repeat(6)}</div>
+
+   <div class="tq-q active" id="tq1">
+    <p class="tq-text">Quel est ton collègue préféré ?</p>
+    <div class="tq-zone">
+     <button class="tq-btn tq-oui" id="tqOui">Aurélien</button>
+     <div class="tq-nonzone" id="tqZone"><button class="tq-btn tq-non" id="tqNon">David</button></div>
+    </div>
+    <p class="tq-hint">(Je vous laisse le soin de choisir la réponse qui correspond le mieux à ton avis personnel.)</p>
+   </div>
+
+   <div class="tq-q" id="tq2">
+    <p class="tq-text">Quelle note donneriez-vous à ce questionnaire ?</p>
+    <div class="tq-stars" id="tqStars"></div>
+    <p class="tq-msg" id="tqRMsg">&nbsp;</p>
+    <div class="tq-row"><button class="tq-btn tq-next" id="tqN2">Suivant</button></div>
+   </div>
+
+   <div class="tq-q" id="tq3">
+    <p class="tq-text">Recommanderai-tu ce questionnaire à tes collègues ?</p>
+    <div class="tq-row">
+     <button class="tq-btn tq-swap" id="tqY3">Oui</button>
+     <button class="tq-btn tq-swap" id="tqPiege">Non</button>
+    </div>
+   </div>
+
+   <div class="tq-q" id="tq4">
+    <p class="tq-text">Sur une échelle de 0 à 10, à quel point adores-tu le développeur ?</p>
+    <input type="range" class="tq-slider" id="tqSl" min="0" max="10" value="5" step="1">
+    <div class="tq-val" id="tqVal">5</div>
+    <p class="tq-msg" id="tqSMsg">&nbsp;</p>
+    <div class="tq-row"><button class="tq-btn tq-next" id="tqN4">Suivant</button></div>
+   </div>
+
+   <div class="tq-q" id="tq5">
+    <p class="tq-text">Qu'apprécies-tu sur ce calendrier de l'avent ?</p>
+    <div class="tq-checks">
+     <label><input type="checkbox" class="tqChk"> Trop bien fait</label>
+     <label><input type="checkbox" class="tqChk"> Bonne initiative</label>
+     <label><input type="checkbox" class="tqChk"> C'est fait par le meilleur développeur du monde.</label>
+     <label><input type="checkbox" class="tqChk"> Ça mérite de faire des éloges au développeur.</label>
+    </div>
+    <p class="tq-msg" id="tqCMsg">&nbsp;</p>
+    <div class="tq-row"><button class="tq-btn tq-next" id="tqN5">Valider</button></div>
+   </div>
+
+   <div class="tq-q" id="tq6">
+    <p class="tq-text">Dernière question, promis : Qui est le meilleur ?</p>
+    <div class="tq-row">
+     <div class="tq-hl">
+      <span class="tq-arrow tq-a1">➤</span><span class="tq-arrow tq-a2">➤</span><span class="tq-arrow tq-a3">➤</span><span class="tq-arrow tq-a4">➤</span>
+      <button class="tq-btn tq-oui" id="tqAur">Aurélien</button>
+     </div>
+     <button class="tq-btn tq-swap" id="tqPSG">LE PSG</button>
+    </div>
+   </div>
+
+   <div class="tq-q" id="tqEnd">
+    <div class="tq-end">
+     <div class="big">🏆</div>
+     <h3>Merci pour votre honnêteté !</h3>
+     <p>Vos réponses (toutes positives, comme par hasard) ont bien été enregistrées.</p>
+     <button class="tq-restart" id="tqRestart">Recommencer</button>
+    </div>
+   </div>
+
+   <div class="tq-modal" id="tqModal"><div>
+    <p>Es-tu sûr de cette réponse? Extinction de ton ordinateur dans 3...,2...,1.....</p>
+    <div class="tq-row" style="border:0;padding:0;background:none"><button class="tq-btn tq-swap" id="tqModNon">Non</button><button class="tq-btn tq-oui" id="tqModOui">Oui</button></div>
+   </div></div>
+  `);
+
+  /* navigation */
+  const go=(id,done)=>{qa('.tq-q').forEach(e=>e.classList.remove('active'));q('#tq'+id).classList.add('active');
+   if(done)q('.tq-progress').children[done-1].classList.add('done')};
+
+  /* Q1 : "David" fuit la souris */
+  const zone=q('#tqZone'),non=q('#tqNon'),SAFE=130;
+  const reset=()=>{const zr=zone.getBoundingClientRect(),br=non.getBoundingClientRect();
+   non.style.left=Math.max((zr.width-br.width)/2,0)+'px';non.style.top='0px';non.style.pointerEvents='auto'};
+  const flee=(mx,my)=>{const zr=zone.getBoundingClientRect(),br=non.getBoundingClientRect();
+   const ml=Math.max(zr.width-br.width,0),mt=Math.max(zr.height-br.height,0);let bl=0,bt=0,bd=-1;
+   for(let i=0;i<15;i++){const l=Math.random()*ml,t=Math.random()*mt,d=Math.hypot(mx-(zr.left+l+br.width/2),my-(zr.top+t+br.height/2));
+    if(d>bd){bd=d;bl=l;bt=t}if(d>SAFE*1.5)break}
+   non.style.left=bl+'px';non.style.top=bt+'px'};
+  const onMove=e=>{if(!q('#tq1').classList.contains('active'))return;
+   const r=non.getBoundingClientRect(),d=Math.hypot(e.clientX-(r.left+r.width/2),e.clientY-(r.top+r.height/2));
+   if(d<SAFE){non.style.pointerEvents='none';flee(e.clientX,e.clientY)}else non.style.pointerEvents='auto'};
+  document.addEventListener('mousemove',onMove);
+  non.addEventListener('mouseenter',e=>{non.style.pointerEvents='none';flee(e.clientX,e.clientY)});
+  non.addEventListener('click',e=>{e.preventDefault();e.stopPropagation()});
+  non.addEventListener('pointerdown',e=>e.preventDefault());
+  q('#tqOui').onclick=()=>go(2,1);
+  setTimeout(reset,60);
+
+  /* Q2 : la note est toujours 5 */
+  const stars=q('#tqStars');let rating=0;
+  const hl=v=>qa('.tq-star').forEach(s=>s.classList.toggle('filled',+s.dataset.v<=v));
+  for(let i=1;i<=5;i++){const w=document.createElement('div');w.className='tq-sw';
+   w.innerHTML='<div class="tq-star" data-v="'+i+'">★</div><div class="tq-num">'+i+'</div>';
+   const s=w.firstChild;
+   s.onmouseenter=()=>hl(i);s.onmouseleave=()=>hl(rating);
+   s.onclick=()=>{rating=5;hl(5);qa('.tq-num').forEach(n=>{n.textContent='5';n.classList.add('forced')});
+    q('#tqRMsg').textContent=i<5?'Hmm, on va plutôt dire 5/5 😊':'Merci pour ce 5/5 mérité !';q('#tqN2').classList.add('ready')};
+   stars.appendChild(w)}
+  q('#tqN2').onclick=()=>go(3,2);
+
+  /* Q3 : "Non" affiche "Oui" au survol */
+  const pg=q('#tqPiege');
+  pg.onmouseenter=()=>pg.textContent='Oui';pg.onmouseleave=()=>pg.textContent='Non';
+  pg.onclick=()=>go(4,3);q('#tqY3').onclick=()=>go(4,3);
+
+  /* Q4 : le curseur revient toujours à 10 */
+  const sl=q('#tqSl'),val=q('#tqVal');
+  sl.oninput=()=>{val.textContent=sl.value;val.classList.remove('snapped')};
+  sl.onchange=()=>setTimeout(()=>{sl.value=10;val.textContent='10';val.classList.add('snapped');
+   q('#tqSMsg').textContent='Ah, 10/10, quelle générosité !';q('#tqN4').classList.add('ready')},180);
+  q('#tqN4').onclick=()=>go(5,4);
+
+  /* Q5 : cases collectives */
+  const chk=qa('.tqChk');
+  chk.forEach(b=>b.onchange=()=>{chk.forEach(o=>o.checked=b.checked);q('#tqN5').classList.toggle('ready',b.checked)});
+  q('#tqN5').onclick=()=>{q('#tqCMsg').textContent='oh non, c\'est trop gentil ❤️, fallait pas 😊';setTimeout(()=>go(6,5),1400)};
+
+  /* Q6 : piège PSG */
+  const modal=q('#tqModal');
+  q('#tqAur').onclick=()=>go('End',6);
+  q('#tqPSG').onclick=()=>modal.classList.add('on');
+  q('#tqModNon').onclick=()=>modal.classList.remove('on');
+  q('#tqModOui').onclick=()=>{modal.classList.remove('on');go('End',6)};
+
+  /* Recommencer */
+  q('#tqRestart').onclick=()=>{go(1);qa('.tq-progress span').forEach(s=>s.classList.remove('done'));
+   rating=0;hl(0);qa('.tq-num').forEach((n,i)=>{n.textContent=i+1;n.classList.remove('forced')});
+   q('#tqRMsg').innerHTML='&nbsp;';q('#tqN2').classList.remove('ready');
+   sl.value=5;val.textContent='5';val.classList.remove('snapped');q('#tqSMsg').innerHTML='&nbsp;';q('#tqN4').classList.remove('ready');
+   chk.forEach(b=>b.checked=false);q('#tqCMsg').innerHTML='&nbsp;';q('#tqN5').classList.remove('ready');
+   pg.textContent='Non';reset()};
+
+  stop=()=>document.removeEventListener('mousemove',onMove)}
+  
  if(T==='catch'){add('<p>Attrape '+x[2]+' flocons avant qu\'ils fondent ! Score : <b id="sc">0</b></p><div id="zone"></div><p id="fb" aria-live="polite"></p>');
   let s=0,iv=setInterval(()=>{if(s>=x[2])return;const z=$('#zone');if(!z)return;const b=document.createElement('button');b.textContent='❄️';
    b.setAttribute('aria-label','flocon');b.style.left=Math.random()*80+'%';b.style.top=Math.random()*75+'%';

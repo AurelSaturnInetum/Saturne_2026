@@ -269,7 +269,7 @@ const D={
 21:['fun','Le plus long soir','🌙',['Solstice d\'hiver','C\'est la nuit la plus longue de l\'année. À partir de demain, les jours rallongent !']],
 22:['quiz','Quiz du baiser','Sous quelle plante s\'embrasse-t-on à Noël ?',['Le houx','Le gui','Le lierre'],1],
 23:['troll','Questionnaire de satisfaction'],
-24:['fun','Joyeux Noël !','🎄✨🎁',['La veille de Noël','Tu as ouvert toutes les cases. Que cette fête soit pleine de lumière et de gâteaux !']]};
+24:['gif','Joyeux Noël !','🎄✨🎁',['La veille de Noël','Tu as ouvert toutes les cases. Que cette fête soit pleine de lumière et de gâteaux !','noel.gif']]};
 
 const sh=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
 let stop=null;
@@ -575,7 +575,7 @@ if(T==='quiz10'){
    pg.textContent='Non';reset()};
 
   stop=()=>document.removeEventListener('mousemove',onMove)}
-  
+
  if(T==='catch'){add('<p>Attrape '+x[2]+' flocons avant qu\'ils fondent ! Score : <b id="sc">0</b></p><div id="zone"></div><p id="fb" aria-live="polite"></p>');
   let s=0,iv=setInterval(()=>{if(s>=x[2])return;const z=$('#zone');if(!z)return;const b=document.createElement('button');b.textContent='❄️';
    b.setAttribute('aria-label','flocon');b.style.left=Math.random()*80+'%';b.style.top=Math.random()*75+'%';

@@ -99,6 +99,7 @@ svg{display:block;width:100%;height:auto;max-width:100%}
 .tq-modal p{margin:0 0 20px}
 .tq-end{text-align:center;padding-top:10px}.tq-end .big{letter-spacing:0}
 .tq-restart{margin-top:16px;background:transparent;border:1px solid currentColor;opacity:.7;font:inherit;font-size:12px;padding:8px 16px;border-radius:999px;cursor:pointer}
+.pdc{display:inline-block;min-width:26px;margin:0 3px;border-bottom:3px solid var(--green);text-align:center}.pdc.fx{border-bottom:0;color:var(--red)}.pdk{min-width:34px;margin:2px;padding:6px 0}
 </style>
 </head>
 <body>
@@ -254,7 +255,7 @@ const D={
 ]],
 7:['rec','Chocolat chaud épicé','☕',['50 cl de lait','100 g de chocolat noir','1 bâton de cannelle','1 pincée de piment doux','Chamallows'],['Chauffe le lait avec la cannelle.','Ajoute le chocolat en morceaux et fouette.','Verse dans une tasse, ajoute les chamallows.']],
 8:['gif','Noël approche!!!','dance.gif','Plus que 16 jours avant le réveillons... Sortez les pulls, les chaussettes et les plaides de Noël😊'],
-9:['fun','Le savais-tu ?','🎅',['Le Père Noël a plusieurs noms','Santa Claus, Papá Noel, Babbo Natale… selon les pays, il porte un nom différent !']],
+9:['pendu','Le pendu du jour','_starwars','À quoi pourrait donc servir ce déclencheur😏😏😏'],
 10:['quiz','Quiz des sapins','Quel pays offre chaque année le grand sapin de Trafalgar Square à Londres ?',['La Norvège','L\'Italie','Le Canada'],0],
 11:['yt','La vidéo du jour','G06EUSiyTGQ','Pour tous les fans de la SNCF...'],
 12:['rec','Pain d\'épices maison','🍞',['250 g de farine','200 g de miel','1 sachet de levure','2 c. à c. d\'épices à pain d\'épices','10 cl de lait'],['Fais tiédir le miel avec le lait.','Mélange avec la farine, la levure et les épices.','Verse dans un moule beurré.','Cuis 40 min à 160 °C.']],
@@ -279,6 +280,23 @@ function open(n){dayGo=0;const x=D[n],el=$('#c');if(stop)stop();stop=null;
  const T=x[0];
  if(T==='fun'){add('<div class="big">'+x[2]+'</div><h3>'+x[3][0]+'</h3><p>'+x[3][1]+'</p>')}
  if(T==='gif'){add('<img src="'+x[2]+'" alt="'+x[1]+'" style="max-width:100%;border-radius:12px;display:block;margin:0 auto"><p>'+x[3]+'</p>')}
+ if(T==='pendu'){
+ const W=x[2].toLowerCase(),MAX=6,L=/[a-z]/,found=new Set(),tried=new Set();let bad=0,won=false;
+ add('<div style="text-align:center"><svg viewBox="0 0 120 130" style="width:150px;height:auto;color:var(--ink)" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><path d="M10 120H70M30 120V15H80V30"/><circle id="pd0" cx="80" cy="38" r="8" style="display:none"/><path id="pd1" d="M80 46V82" style="display:none"/><path id="pd2" d="M80 54L65 70" style="display:none"/><path id="pd3" d="M80 54L95 70" style="display:none"/><path id="pd4" d="M80 82L66 106" style="display:none"/><path id="pd5" d="M80 82L94 106" style="display:none"/></svg><p id="pdw" style="font-size:30px;font-weight:700;margin:6px 0"></p><p id="pdi" style="margin:0 0 8px">Erreurs : 0 / '+MAX+'</p><div id="pdk"></div><p id="pdm" aria-live="polite" style="font-weight:700;margin-top:10px"></p></div>');
+ const word=()=>{$('#pdw').innerHTML=[...W].map(c=>!L.test(c)?'<span class="pdc fx">'+c+'</span>':'<span class="pdc">'+(found.has(c)||bad>=MAX?c.toUpperCase():'&nbsp;')+'</span>').join('')};
+ const guess=l=>{
+  if(won||bad>=MAX||tried.has(l))return;
+  tried.add(l);const kb=$('#pdk [data-l="'+l+'"]');kb.disabled=true;
+  if(W.includes(l)){found.add(l);kb.classList.add('ok')}else{kb.classList.add('ko');$('#pd'+bad).style.display='';bad++}
+  word();$('#pdi').textContent='Erreurs : '+bad+' / '+MAX;
+  if([...W].every(c=>!L.test(c)||found.has(c))){won=true;$('#pdm').textContent=x[3]}
+  else if(bad>=MAX){$('#pdm').innerHTML='Perdu ! Le mot était '+W.toUpperCase()+'. <button class="b" id="pdr">Rejouer</button>';$('#pdr').onclick=()=>open(n)}
+ };
+ 'abcdefghijklmnopqrstuvwxyz'.split('').forEach(l=>{const b=document.createElement('button');b.className='b pdk';b.textContent=l.toUpperCase();b.dataset.l=l;b.onclick=()=>guess(l);$('#pdk').appendChild(b)});
+ const kd=e=>{if(/^[a-z]$/i.test(e.key)&&!e.ctrlKey&&!e.metaKey&&!e.altKey)guess(e.key.toLowerCase())};
+ document.addEventListener('keydown',kd);stop=()=>document.removeEventListener('keydown',kd);
+ word();
+}
  if(T==='yt'){
     if(playing) MUS.pause();
 

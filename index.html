@@ -121,6 +121,40 @@ svg{display:block;width:100%;height:auto;max-width:100%}
 .ckslip{max-height:0;opacity:0;overflow:hidden;margin:0 auto;width:min(100%,420px);background:#fffdf4;border:2px solid #e3a72f;border-radius:6px;transition:max-height .8s,opacity .8s,margin .8s;font-family:Georgia,serif;color:#3a2a22;box-shadow:0 4px 10px rgba(0,0,0,.25)}
 .ckslip.on{max-height:360px;opacity:1;margin-top:10px}
 .ckslip div{padding:14px 16px}
+/* ---------- Jour 2 : ouverture de booster ---------- */
+.bst{text-align:center}
+#bsh{font-weight:700;margin:0 0 12px;min-height:22px}
+#bsz{display:flex;justify-content:center;perspective:1000px;min-height:150px}
+#bsn{margin-top:12px;min-height:50px}
+.bpk{position:relative;width:200px;aspect-ratio:5/7;border:0;border-radius:8px;cursor:pointer;color:#fff;font:700 24px/1.2 'Mountains of Christmas',Georgia,serif;text-shadow:0 2px 4px rgba(0,0,0,.5);background:linear-gradient(135deg,#b3262f,#e3a72f 48%,#1f5a3d);box-shadow:0 10px 24px rgba(0,0,0,.4);animation:bpw 1.6s ease-in-out infinite}
+.bpk::before,.bpk::after{content:'';position:absolute;left:0;right:0;height:14px;background:repeating-linear-gradient(90deg,rgba(0,0,0,.3) 0 3px,transparent 3px 6px)}
+.bpk::before{top:0}.bpk::after{bottom:0}
+.bpk small{font:700 13px Nunito,sans-serif;letter-spacing:.1em}
+@keyframes bpw{50%{transform:rotate(2deg) scale(1.03)}}
+.bpk.tear{animation:bpt .6s forwards}
+@keyframes bpt{30%{transform:rotate(-5deg) scale(1.06)}to{transform:rotate(8deg) scale(1.3);opacity:0;filter:brightness(2.2)}}
+.bcd{width:min(100%,290px);aspect-ratio:5/7;cursor:pointer;outline:none;border-radius:14px}
+.bcn{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.2,.8,.3,1)}
+.bcd.up .bcn{transform:rotateY(180deg)}
+.bbk,.bfr{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;border:6px solid var(--gold)}
+.bbk{display:flex;align-items:center;justify-content:center;font-size:64px;background:repeating-linear-gradient(45deg,#1f5a3d 0 10px,#2b7a53 10px 20px)}
+.bfr{transform:rotateY(180deg);background:#fffdf4;color:#3a2a22;padding:8px;display:flex;flex-direction:column;gap:6px;overflow:hidden;text-align:left}
+.bhd{display:flex;justify-content:space-between;align-items:baseline;font-size:17px}
+.bhd span{color:#b3262f;font-weight:700;font-size:13px}
+.bar{aspect-ratio:4/3;border:3px solid var(--gold);border-radius:6px;overflow:hidden;background:#ddd;flex:none}
+.bar img{width:100%;height:100%;object-fit:cover;object-position:center 25%;display:block;min-height:0}
+.bar.multi{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:3px}
+.bar.multi img:first-child{grid-row:1/3}
+.brr{font-size:12px;font-weight:700;letter-spacing:.08em;color:#8a6a10}
+.btx{margin:0;font-size:13px;line-height:1.35;overflow:auto}
+/* carte ultra rare : fond holographique + reflet qui balaye */
+.bcd.ultra .bfr{background:linear-gradient(125deg,#fff3c4,#ffd1f0,#c8f0ff,#d6ffd8,#fff3c4);background-size:300% 300%;border-color:#ffd24a;animation:bho 4s ease-in-out infinite alternate}
+@keyframes bho{from{background-position:0 50%}to{background-position:100% 50%}}
+.bsh{position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.45) 50%,transparent 65%);background-size:250% 100%;animation:bsw 2.2s linear infinite}
+@keyframes bsw{from{background-position:150% 0}to{background-position:-50% 0}}
+.bcd.ultra.up{animation:bgl 1.4s ease-out forwards}
+@keyframes bgl{0%{filter:drop-shadow(0 0 0 #ffd24a)}50%{filter:drop-shadow(0 0 30px #ffd24a)}100%{filter:drop-shadow(0 0 12px #ffd24a)}}
+@media (prefers-reduced-motion:reduce){.bpk,.bcd.ultra .bfr,.bsh,.bcd.ultra.up{animation:none}.bcn{transition:none}}
 </style>
 </head>
 <body>
@@ -293,7 +327,13 @@ back.onclick=()=>{bell();close()};
 const E=['🎄','🎁','⭐','🔔','🦌','🍪','⛄','🧦','🕯️','🎅','❄️','🍬'];
 const D={
 1:['gif','Bienvenue dans le calendrier de l\'avent 2026','jour1.gif','Pleins de bonnes choses vous attendent, des jeux, des recettes et des secrets... Alors, soyez curieux, attentifs et patient😊'],
-2:['rec','Sablés de Noël','🍪',['250 g de farine','125 g de beurre mou','100 g de sucre','1 œuf','1 c. à c. de cannelle'],['Mélange le beurre et le sucre.','Ajoute l\'œuf, la farine et la cannelle, puis pétris.','Étale la pâte, découpe des étoiles et des sapins.','Cuis 10 min à 180 °C. Décore une fois refroidis !']],
+2:['booster','Ouverture de booster',[
+    {nom:'Le TL',pv:'PV 120',rar:'◆ COMMUNE',imgs:['TL.png'],txt:'Texte du TL ici.'},
+    {nom:'La Base de co',pv:'PV 90',rar:'◆◆ PEU COMMUNE',imgs:['Base_de_co.png'],txt:'Texte de la base de co ici.'},
+    {nom:'Jean',pv:'PV 100',rar:'★ RARE',imgs:['Jean.png'],txt:'Texte de Jean ici.'},
+    {nom:'Les Devs',pv:'PV 3×70',rar:'★★ DOUBLE RARE',imgs:['Dev1.png','Dev2.png','Dev3.png'],txt:'Texte des trois devs ici.'},
+    {nom:'Le Manager IT',pv:'PV 999',rar:'✨ ULTRA RARE ✨',imgs:['Manager_IT.png'],ultra:true,txt:'Texte du manager IT ici.'}
+]],
 3:['mem','Memory des cadeaux',6],
 4:['yt','La vidéo du jour','x3-FS8hFLLA','C\'est cadeau!!🤣🤣🤣'],
 5:['catch','Attrape les flocons',10],
@@ -336,6 +376,31 @@ function open(n){dayGo=0;const x=D[n],el=$('#c');if(stop)stop();stop=null;
  const T=x[0];
  if(T==='fun'){add('<div class="big">'+x[2]+'</div><h3>'+x[3][0]+'</h3><p>'+x[3][1]+'</p>')}
  if(T==='gif'){add('<img src="'+x[2]+'" alt="'+x[1]+'" style="max-width:100%;border-radius:12px;display:block;margin:0 auto"><p>'+x[3]+'</p>')}
+   if(T==='booster'){
+  const C=x[2];
+  add('<div class="bst"><p id="bsh"></p><div id="bsz"></div><div id="bsn"></div></div>');
+  const z=$('#bsz'),h=$('#bsh'),nx=$('#bsn');
+  const art=c=>'<div class="bar'+(c.imgs.length>1?' multi':'')+'">'+c.imgs.map(s=>'<img src="'+s+'" alt="'+c.nom+'">').join('')+'</div>';
+  const card=c=>'<div class="bcd'+(c.ultra?' ultra':'')+'"><div class="bcn"><div class="bbk">🎄</div><div class="bfr"><div class="bhd"><b>'+c.nom+'</b><span>'+c.pv+'</span></div>'+art(c)+'<div class="brr">'+c.rar+'</div><p class="btx">'+c.txt+'</p>'+(c.ultra?'<i class="bsh"></i>':'')+'</div></div></div>';
+  const show=k=>{
+   const c=C[k];z.innerHTML=card(c);nx.innerHTML='';
+   h.textContent='Carte '+(k+1)+' / '+C.length+' — clique pour la retourner';
+   const el=z.firstChild;el.tabIndex=0;el.setAttribute('role','button');
+   const flip=()=>{
+    if(el.classList.contains('up'))return;
+    el.classList.add('up');
+    if(c.ultra)bell();else whoosh(.35,500,1400,.1);
+    h.textContent=c.rar;
+    const last=k===C.length-1;
+    nx.innerHTML='<button class="b" id="bnb">'+(last?'🔁 Ouvrir un autre booster':'Carte suivante ▶')+'</button>';
+    $('#bnb').onclick=()=>last?pack():show(k+1)};
+   el.onclick=flip;el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip()}}};
+  const pack=()=>{
+   h.textContent='Clique sur le booster pour l\'ouvrir 🎁';nx.innerHTML='';
+   z.innerHTML='<button class="bpk" id="bpk" aria-label="Ouvrir le booster"><span>🎄<br>BOOSTER<br>SATURNE<br><small>5 CARTES</small></span></button>';
+   $('#bpk').onclick=function(){this.classList.add('tear');whoosh(.6,1800,300,.12);setTimeout(()=>show(0),650)}};
+  pack();
+ }
  if(T==='cookie'){
  add('<div class="ck" id="ck"><svg viewBox="0 0 240 150" id="cks" tabindex="0" role="button" aria-label="Biscuit de fortune"><defs><linearGradient id="ckg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f7d58a"/><stop offset="1" stop-color="#d98f34"/></linearGradient><path id="ckb" d="M28 96C20 55 70 22 112 52C118 56 122 56 128 52C170 22 220 55 212 96C206 128 150 138 120 112C90 138 34 128 28 96Z"/><path id="ckc" d="M112 52C102 80 102 100 120 112" fill="none" stroke="#b9741f" stroke-width="3" stroke-linecap="round"/><clipPath id="ckcl"><rect x="0" y="0" width="120" height="150"/></clipPath><clipPath id="ckcr"><rect x="120" y="0" width="120" height="150"/></clipPath></defs><g class="ckw"><g class="ckl" clip-path="url(#ckcl)"><use href="#ckb" fill="url(#ckg)" stroke="#b9741f" stroke-width="3"/><use href="#ckc"/></g><g class="ckr" clip-path="url(#ckcr)"><use href="#ckb" fill="url(#ckg)" stroke="#b9741f" stroke-width="3"/><use href="#ckc"/><path d="M150 62C175 57 195 70 200 90" fill="none" stroke="#fff3c9" stroke-width="3" stroke-linecap="round" opacity=".7"/></g></g></svg><p id="ckh" style="font-weight:700">Clique sur le biscuit pour le casser 🥠</p><div class="ckslip" id="ckp"><div id="ckt"></div></div><p><button class="b" id="ckn" style="display:none">🥠 Un autre biscuit</button></p></div>');
  let bag=[],busy=false;

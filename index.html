@@ -292,8 +292,9 @@ function open(n){dayGo=0;const x=D[n],el=$('#c');if(stop)stop();stop=null;
  add('<p>Clique sur deux pièces pour les échanger. Coups : <b id="pzm">0</b> <button class="b" id="pzp" style="padding:4px 10px">👁 Modèle</button></p><div id="pzb" style="position:relative;width:min(100%,340px);margin:0 auto"><div id="pzg" style="display:grid;grid-template-columns:repeat('+C+',1fr);grid-template-rows:repeat('+R+',1fr);gap:2px;aspect-ratio:'+PZR+'"></div><img id="pzv" src="'+PUZ+'" alt="" style="display:none;position:absolute;inset:0;width:100%;height:100%;border-radius:6px"></div><p id="pzf" aria-live="polite" style="font-weight:700"></p>');
  const g=$('#pzg');g.style.setProperty('--img','url('+PUZ+')');
  const render=()=>{g.innerHTML='';order.forEach((v,i)=>{const t=document.createElement('button');t.className='pzt'+(v===i?' ok':'')+(i===sel?' sel':'');t.style.backgroundSize=C*100+'% '+R*100+'%';t.style.backgroundPosition=(v%C)*100/(C-1)+'% '+Math.floor(v/C)*100/(R-1)+'%';t.setAttribute('aria-label','pièce '+(i+1));t.dataset.v=v;t.onclick=()=>pick(i);g.appendChild(t)})};
- const pick=i=>{
+const pick=i=>{
   if(done)return;
+  lolPrep();
   if(sel<0){sel=i;render();return}
   if(sel===i){sel=-1;render();return}
   [order[sel],order[i]]=[order[i],order[sel]];sel=-1;moves++;$('#pzm').textContent=moves;render();
@@ -767,7 +768,11 @@ function smokeGo(){
 $('#smHit').onclick=smokeGo;
 $('#smHit').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();smokeGo()}};
 /* ---------- Finale du puzzle : rire en plein écran ---------- */
-let lolEl=null,lolSnd=null,lolPops=[],lolTimer=0,lolMusic=false;
+let lolEl=null,lolSnd=null,lolPops=[],lolTimer=0,lolMusic=false,lolScr=null,lolP=null;
+function lolPrep(){
+ if(lolP||!('getScreenDetails' in window))return;
+ lolP=window.getScreenDetails().then(d=>{lolScr=d;console.log('Écrans détectés :',d.screens.length)}).catch(e=>{lolP=null;console.warn('Accès aux écrans refusé ou impossible :',e)});
+}
 function lolClose(){
  if(!lolEl)return;
  clearTimeout(lolTimer);
@@ -782,7 +787,7 @@ function lolFill(doc){
  doc.body.style.cssText='margin:0;background:#000;height:100vh;display:flex;cursor:pointer';
  const i=doc.createElement('img');i.src=RIRE_IMG;i.style.cssText='width:100%;height:100%;object-fit:cover';doc.body.appendChild(i);
 }
-async function finale(){
+function finale(){
  if(lolEl)return;
  lolMusic=typeof playing!=='undefined'&&playing&&typeof MUS!=='undefined';if(lolMusic)MUS.pause();
  const el=document.createElement('div');el.style.cssText='position:fixed;inset:0;z-index:999;background:#000;cursor:pointer';
@@ -790,16 +795,16 @@ async function finale(){
  el.onclick=lolClose;document.body.appendChild(el);lolEl=el;
  lolSnd=new Audio(RIRE_SND);lolSnd.onended=()=>{lolTimer=setTimeout(lolClose,1500)};
  const pr=lolSnd.play();if(pr&&pr.catch)pr.catch(()=>{});
- try{await el.requestFullscreen()}catch(e){}
- document.addEventListener('fullscreenchange',function h(){if(!document.fullscreenElement){document.removeEventListener('fullscreenchange',h);lolClose()}});
- if('getScreenDetails' in window){try{
-  const d=await window.getScreenDetails();
-  for(const s of d.screens){
-   if(s===d.currentScreen)continue;
+ if(lolScr){
+  for(const s of lolScr.screens){
+   if(s===lolScr.currentScreen)continue;
    const w=window.open('','_blank','popup=yes,left='+s.availLeft+',top='+s.availTop+',width='+s.availWidth+',height='+s.availHeight);
-   if(w){lolFill(w.document);w.document.addEventListener('click',lolClose);w.document.addEventListener('keydown',lolClose);lolPops.push(w)}
+   if(w){lolFill(w.document);w.document.addEventListener('click',lolClose);w.document.addEventListener('keydown',lolClose);try{w.document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}lolPops.push(w)}
+   else console.warn('Fenêtre bloquée : autorise les pop-ups pour cette page');
   }
- }catch(e){}}
+ }else console.warn('Autres écrans non disponibles : permission non accordée ou navigateur non compatible');
+ try{el.requestFullscreen().catch(()=>{})}catch(e){}
+ document.addEventListener('fullscreenchange',function h(){if(!document.fullscreenElement){document.removeEventListener('fullscreenchange',h);lolClose()}});
 }
 </script>
 </body>

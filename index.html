@@ -155,6 +155,23 @@ svg{display:block;width:100%;height:auto;max-width:100%}
 .bcd.ultra.up{animation:bgl 1.4s ease-out forwards}
 @keyframes bgl{0%{filter:drop-shadow(0 0 0 #ffd24a)}50%{filter:drop-shadow(0 0 30px #ffd24a)}100%{filter:drop-shadow(0 0 12px #ffd24a)}}
 @media (prefers-reduced-motion:reduce){.bpk,.bcd.ultra .bfr,.bsh,.bcd.ultra.up{animation:none}.bcn{transition:none}}
+/* ---------- Jour 3 : boule de cristal ---------- */
+.cb{text-align:center}
+#cbq{width:100%;max-width:360px;font:inherit;padding:10px 14px;border:3px solid var(--green);border-radius:999px;background:var(--snow);color:#1f5a3d;text-align:center}
+.cbw{position:relative;width:min(100%,250px);margin:18px auto 0;cursor:pointer;outline:none}
+.cbs{position:relative;width:100%;aspect-ratio:1;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 50% 65%,#7a4bd0 0,#3b1c7a 45%,#12072b 100%);box-shadow:0 0 36px 6px rgba(150,90,255,.55),inset 0 -22px 44px rgba(190,140,255,.45),inset 0 10px 30px rgba(0,0,0,.5)}
+.cbm{position:absolute;inset:-20%;background:radial-gradient(circle at 30% 40%,rgba(255,255,255,.35),transparent 30%),radial-gradient(circle at 70% 60%,rgba(200,160,255,.5),transparent 35%),radial-gradient(circle at 50% 80%,rgba(120,220,255,.35),transparent 30%);filter:blur(8px);animation:cbm 9s linear infinite;opacity:.55;transition:opacity .4s}
+@keyframes cbm{to{transform:rotate(360deg)}}
+.cbs::before{content:'';position:absolute;left:14%;top:7%;width:46%;height:28%;border-radius:50%;background:linear-gradient(rgba(255,255,255,.85),rgba(255,255,255,0));transform:rotate(-24deg);z-index:2}
+.cbs::after{content:'';position:absolute;right:16%;bottom:9%;width:22%;height:10%;border-radius:50%;background:rgba(255,255,255,.3);filter:blur(3px);transform:rotate(-30deg);z-index:2}
+.cbw.go .cbm{opacity:1;animation-duration:.8s}
+.cbw.go .cbs{animation:cbsh .9s ease-in-out}
+@keyframes cbsh{15%{transform:translate(-8px,2px) rotate(-3deg)}35%{transform:translate(8px,-2px) rotate(3deg)}55%{transform:translate(-6px,2px)}75%{transform:translate(6px,-1px)}}
+.cbbs{width:62%;height:34px;margin:-14px auto 0;position:relative;z-index:3;background:linear-gradient(#e3a72f,#8a5a12 70%,#4a2e08);border-radius:10px 10px 18px 18px;box-shadow:0 8px 14px rgba(0,0,0,.4)}
+#cbt{min-height:84px;margin:16px 0 8px;font:700 19px/1.4 Georgia,serif;color:var(--red);opacity:0;transition:opacity .8s}
+#cbt.on{opacity:1}
+#cbt small{display:block;margin-top:6px;font:400 12px Nunito,sans-serif;color:var(--ink);opacity:.7}
+@media (prefers-reduced-motion:reduce){.cbm,.cbw.go .cbs{animation:none}}
 </style>
 </head>
 <body>
@@ -216,6 +233,32 @@ svg{display:block;width:100%;height:auto;max-width:100%}
 </div>
 
 <script>
+const BOULE=[
+"Oui, mais seulement si tu le demandes en chuchotant à un radiateur.",
+"Les astres sont formels : demande à un pigeon, il a des contacts.",
+"La réponse se trouve dans le troisième tiroir à gauche. Je ne sais pas de quel meuble.",
+"Non. Mais avec un peu de sauce, tout devient possible.",
+"Ma boule indique « 404 : destin introuvable ». Essaie de la redémarrer.",
+"Oui, à condition de porter une chaussette de Noël différente à chaque pied.",
+"Le brouillard s'épaissit… je vois un taboulé. Je ne sais pas ce que ça signifie, mais c'est important.",
+"Les esprits sont en réunion. Ils reviennent vers toi dès que possible.",
+"Absolument. Et ça se passera un mardi, probablement après la pause café.",
+"Je vois un lutin qui lève les yeux au ciel. Interprète cela comme tu veux.",
+"Demande à nouveau après avoir secoué un grille-pain. Les résultats seront meilleurs.",
+"La réponse est oui. La question, en revanche, mérite d'être reformulée.",
+"Le futur est flou. Probablement un problème de wifi astral.",
+"Oui, mais ne le dis pas à la plante verte, elle est jalouse.",
+"Mon don de voyance a besoin d'un café. Rappelle-moi dans 5 minutes (cela veut dire 3 heures).",
+"Tout dépend du nombre de marshmallows dans ton chocolat chaud.",
+"Je vois… une oie. Elle te regarde. Elle sait.",
+"Non, non, et encore non. Sauf le jeudi.",
+"Les cartes, le marc de café et la boule sont d'accord : personne ne sait.",
+"Oui ! Mais méfie-toi d'un homme barbu en rouge qui dit « ho ho ho ». Ah, c'est de saison, en fait.",
+"La boule affiche « mise à jour disponible ». Installation du destin en cours : 37 %.",
+"Un cygne t'enverra un signe. Si c'est un canard, c'est un non.",
+"Les rennes ont voté : 4 pour, 3 contre, 2 abstentions et Rudolph a perdu sa carte d'électeur.",
+"Oui, dès que ta chaise de bureau aura fini sa crise existentielle."
+];
 const PROPHETIES=[
 "En 2027, votre imprimante fonctionnera du premier coup. Personne ne vous croira, pas même vous.",
 "Un pigeon vous confiera un secret d'État en mars. Vous ne saurez jamais lequel : il parlait en roucoulements.",
@@ -334,7 +377,7 @@ const D={
     {nom:'Les Devs',pv:'PV 3×70',rar:'★★ DOUBLE RARE',imgs:['Dev1.png','Dev2.png','Dev3.png'],txt:'Texte des trois devs ici.'},
     {nom:'Le Manager IT',pv:'PV 999',rar:'✨ ULTRA RARE ✨',imgs:['Manager_IT.png'],ultra:true,txt:'Texte du manager IT ici.'}
 ]],
-3:['mem','Memory des cadeaux',6],
+3:['boule','La boule de cristal'],
 4:['yt','La vidéo du jour','x3-FS8hFLLA','C\'est cadeau!!🤣🤣🤣'],
 5:['catch','Attrape les flocons',10],
 6:['rec','Chocolat chaud épicé','☕',['50 cl de lait','100 g de chocolat noir','1 bâton de cannelle','1 pincée de piment doux','Chamallows'],['Chauffe le lait avec la cannelle.','Ajoute le chocolat en morceaux et fouette.','Verse dans une tasse, ajoute les chamallows.']],
@@ -376,6 +419,25 @@ function open(n){dayGo=0;const x=D[n],el=$('#c');if(stop)stop();stop=null;
  const T=x[0];
  if(T==='fun'){add('<div class="big">'+x[2]+'</div><h3>'+x[3][0]+'</h3><p>'+x[3][1]+'</p>')}
  if(T==='gif'){add('<img src="'+x[2]+'" alt="'+x[1]+'" style="max-width:100%;border-radius:12px;display:block;margin:0 auto"><p>'+x[3]+'</p>')}
+ if(T==='boule'){
+  add('<div class="cb"><input id="cbq" placeholder="Pose ta question à la boule…" maxlength="80" aria-label="Ta question"><div class="cbw" id="cbw" tabindex="0" role="button" aria-label="Consulter la boule de cristal"><div class="cbs"><div class="cbm"></div></div><div class="cbbs"></div></div><p id="cbt" aria-live="polite"></p><button class="b" id="cbg">🔮 Consulter la boule</button></div>');
+  let bag=[],busy=false;
+  const next=()=>{if(!bag.length)bag=sh(BOULE);return bag.pop()};
+  const ask=()=>{
+   if(busy)return;busy=true;
+   const w=$('#cbw'),t=$('#cbt'),q=$('#cbq').value.trim();
+   t.classList.remove('on');w.classList.add('go');whoosh(1.2,200,900,.08);
+   setTimeout(()=>{
+    if(!$('#cbt'))return;
+    w.classList.remove('go');
+    t.innerHTML='🔮 '+next()+(q?'<small>« '+q.replace(/</g,'&lt;')+' »</small>':'');
+    t.classList.add('on');busy=false;
+   },1300)};
+  $('#cbg').onclick=ask;
+  $('#cbw').onclick=ask;
+  $('#cbq').onkeydown=e=>{if(e.key==='Enter')ask()};
+  $('#cbw').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();ask()}};
+ }
    if(T==='booster'){
   const C=x[2];
   add('<div class="bst"><p id="bsh"></p><div id="bsz"></div><div id="bsn"></div></div>');

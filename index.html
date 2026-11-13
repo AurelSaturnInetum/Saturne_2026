@@ -894,13 +894,14 @@ $('#clock').onclick=birdGo;
 $('#clock').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();birdGo()}};
 /* ---------- Easter egg : sapin illuminé + feux d'artifice ---------- */
 let xmasBusy=false;
+const FW=new Audio('feux.mp3');FW.preload='auto';
 function boom(){try{initAudio();if(!ac)return;const n=ac.currentTime,o=ac.createOscillator(),g=ac.createGain();o.type='sine';o.frequency.setValueAtTime(140,n);o.frequency.exponentialRampToValueAtTime(40,n+.3);g.gain.setValueAtTime(.22,n);g.gain.exponentialRampToValueAtTime(.001,n+.35);o.connect(g).connect(ac.destination);o.start(n);o.stop(n+.4)}catch(e){}}
 function xmasGo(){
  if(xmasBusy)return;xmasBusy=true;
  const G=document.createElementNS(NS,'g');G.style.pointerEvents='none';$('#map').appendChild(G);
  const mk=(tag,at)=>{const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);G.appendChild(e);return e};
  const COL=['#ff4d4d','#ffd34d','#5cff7a','#4dc3ff','#ff7ae0','#ffffff'],TOT=11000;
- try{SND.currentTime=0;SND.play().catch(()=>{})}catch(e){}
+ try{if(playing)MUS.pause();FW.currentTime=0;FW.play().catch(()=>{})}catch(e){}
  const halos=[75,55,38].map(r=>mk('circle',{cx:418,cy:495,r,fill:'#ffd27a',opacity:0}));
  const L=[];for(let i=0;i<46;i++){
   const y=432+((i*37)%124),w=(y-422)*.36,x=418+(((i*53)%100)/50-1)*w*.9;
@@ -922,13 +923,13 @@ function xmasGo(){
     b.rk.setAttribute('cx',x);b.rk.setAttribute('cy',y);
     b.tl.setAttribute('x1',x);b.tl.setAttribute('y1',y);b.tl.setAttribute('x2',b.s+(b.bx-b.s)*q);b.tl.setAttribute('y2',b.sy+(b.by-b.sy)*q);
    }else{
-    if(!b.ps){b.rk.remove();b.tl.remove();boom();b.ps=[];for(let k=0;k<30;k++)b.ps.push({a:k/30*6.283+Math.random()*.2,v:110+Math.random()*90,e:mk('circle',{r:2.4,fill:k%3?b.c:'#fff'})})}
+    if(!b.ps){b.rk.remove();b.tl.remove();b.ps=[];for(let k=0;k<30;k++)b.ps.push({a:k/30*6.283+Math.random()*.2,v:110+Math.random()*90,e:mk('circle',{r:2.4,fill:k%3?b.c:'#fff'})})}
     const tau=dt-.7;
     b.ps.forEach(q=>{const d=q.v*(1-Math.exp(-tau*2.2))/2.2;q.e.setAttribute('cx',b.bx+Math.cos(q.a)*d);q.e.setAttribute('cy',b.by+Math.sin(q.a)*d+30*tau*tau);q.e.setAttribute('opacity',Math.max(0,1-tau/1.7))});
     if(tau>1.7){b.ps.forEach(q=>q.e.remove());b.done=true}
    }
   });
-  if(t<TOT)requestAnimationFrame(f);else{G.remove();xmasBusy=false}
+  if(t<TOT)requestAnimationFrame(f);else{G.remove();xmasBusy=false;FW.pause();if(playing)MUS.play().catch(()=>{})}
  })(t0);
 }
 $('#tree').onclick=xmasGo;

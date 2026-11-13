@@ -384,14 +384,14 @@ const E=['🎄','🎁','⭐','🔔','🦌','🍪','⛄','🧦','🕯️','🎅',
 const D={
 1:['gif','Bienvenue dans le calendrier de l\'avent 2026','jour1.gif','Pleins de bonnes choses vous attendent, des jeux, des recettes et des secrets... Alors, soyez curieux, attentifs et patient😊'],
 2:['booster','Ouverture de booster',[
-    {nom:'Le N1',pv:'PV 90',t:'t1',rar:'◆ COMMUNE',imgs:['N1.jpg'],txt:'Texte du TL ici.'},
-    {nom:'Le 3X8',pv:'PV 100',t:'t1',rar:'◆ COMMUNE',imgs:['3X8.jpg'],txt:'Texte du TL ici.'},
-    {nom:'Le N2',pv:'PV 125',t:'t1',rar:'◆ COMMUNE',imgs:['N2.jpg'],txt:'Texte du TL ici.'},
-    {nom:'La Base de co',pv:'PV 130',t:'t2',rar:'◆◆ PEU COMMUNE',imgs:['Base_de_co.png'],txt:'Texte de la base de co ici.'},
-    {nom:'Le TL',pv:'PV 150',t:'t2',rar:'◆◆ PEU COMMUNE',imgs:['TL.jpg'],txt:'Texte de la base de co ici.'},
-    {nom:'Le Référents Support Applicatif Métier',pv:'PV 200',t:'t3',rar:'★ RARE',imgs:['Referent_de_domaine.png'],txt:'Texte de Jean ici.'},
-    {nom:'Les Devs',pv:'PV 3×125',t:'t4',rar:'★★ TRÈS RARE',imgs:['Dev3.jpg','Dev2.jpg','Dev1.png'],txt:'Texte des trois devs ici.'},
-    {nom:'Le Manager IT',pv:'PV 999',rar:'✨ ULTRA RARE ✨',imgs:['Manager_IT.jpg'],ultra:true,txt:'Texte du manager IT ici.'}
+    {nom:'Le N1',pv:'PV 90',t:'t1',rar:'◆ COMMUNE',imgs:['N1.jpg'],txt:'Premier rempart face à « ça ne marche plus ». Phrase fétiche : « Avez-vous essayé de l’éteindre et de le rallumer ? »'},
+    {nom:'Le 3X8',pv:'PV 100',t:'t1',rar:'◆ COMMUNE',imgs:['3X8.jpg'],txt:'Quand toute la France dort, eux veillent. Le café, lui, ne dort jamais non plus.'},
+    {nom:'Le N2',pv:'PV 125',t:'t1',rar:'◆ COMMUNE',imgs:['N2.jpg'],txt:'Reçoit les tickets que le N1 a escaladés. Spécialité : transformer un mystère en procédure et résolution. La Mystery Inc. est là 🤣'},
+    {nom:'La Base de co',pv:'PV 130',t:'t2',rar:'◆◆ PEU COMMUNE',imgs:['Base_de_co.png'],txt:'Transforme le chaos en procédures. Si vous trouvez la réponse du premier coup, c’est grâce à eux.'},
+    {nom:'Le TL',pv:'PV 150',t:'t2',rar:'◆◆ PEU COMMUNE',imgs:['TL.jpg'],txt:'Sait tout, voit tout, répond à tout… Il est là, le MacGYVER du support.'},
+    {nom:'Le Référent Support Applicatif Métier',pv:'PV 200',t:'t3',rar:'★ RARE',imgs:['Referent_de_domaine.png'],txt:'Mi-support, mi-métier, facilement joignable sur teams avec le célèbre « Tu m\'étonnes ».'},
+    {nom:'Les Devs',pv:'PV 3×125',t:'t4',rar:'★★ TRÈS RARE',imgs:['Dev3.jpg','Dev2.jpg','Dev1.png'],txt:'Trois cerveaux, un seul message de commit : « Problème corrigé ». Et évidemment, ça marchait sur leur machine.'},
+    {nom:'Le Manager IT',pv:'PV 999',rar:'✨ ULTRA RARE ✨',imgs:['Manager_IT.jpg'],ultra:true,txt:'Le grand manitou : celui qui embellit notre journée avec cette phrase : « Pensez à votre Vigicra. »'}
 ]],
 3:['boule','La boule de cristal'],
 4:['yt','La vidéo du jour','x3-FS8hFLLA','C\'est cadeau!!🤣🤣🤣'],
@@ -943,8 +943,8 @@ function signVideo(id,titre,texte){
  $('#ov').classList.add('on');
 }
 const SIGNS=[
- ['#signMaison','ONTVUomrRik','🎅 Message de la Maison du Père Noël','Texte sous la vidéo de la Maison du Père Noël.'],
- ['#signInetum','0Kvw2BPKjz0','🎁 Un petit clin d\'œil d\'INETUM','Texte sous la vidéo d\'INETUM.']
+ ['#signMaison','ONTVUomrRik','🎅 Message de la Maison du Père Noël','Vous souvenez-vous de cette pub?.'],
+ ['#signInetum','0Kvw2BPKjz0','🎁 Un petit clin d\'œil d\'INETUM','Prêt à faire du parkour sur le plateau?']
 ];
 SIGNS.forEach(([sel,id,titre,texte])=>{
  const el=$(sel);

@@ -447,8 +447,10 @@ function open(n){dayGo=0;const x=D[n],el=$('#c');if(stop)stop();stop=null;
   let bag=[],busy=false;
   const next=()=>{if(!bag.length)bag=sh(BOULE);return bag.pop()};
   const ask=()=>{
-   if(busy)return;busy=true;
+   if(busy)return;
    const w=$('#cbw'),t=$('#cbt'),q=$('#cbq').value.trim();
+   if(!q){t.innerHTML='🔮 La boule ne devine pas les questions… pose-lui en une d\'abord !';t.classList.add('on');$('#cbq').focus();return}
+   busy=true;
    t.classList.remove('on');w.classList.add('go');whoosh(1.2,200,900,.08);
    setTimeout(()=>{
     if(!$('#cbt'))return;

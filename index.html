@@ -390,7 +390,7 @@ const D={
     {nom:'La Base de co',pv:'PV 90',t:'t2',rar:'◆◆ PEU COMMUNE',imgs:['Base_de_co.png'],txt:'Texte de la base de co ici.'},
     {nom:'Le TL',pv:'PV 90',t:'t2',rar:'◆◆ PEU COMMUNE',imgs:['TL.jpg'],txt:'Texte de la base de co ici.'},
     {nom:'Le Référents Support Applicatif Métier',pv:'PV 100',t:'t3',rar:'★ RARE',imgs:['Referent_de_domaine.png'],txt:'Texte de Jean ici.'},
-    {nom:'Les Devs',pv:'PV 3×70',t:'t4',rar:'★★ TRÈS RARE',imgs:['Dev1.png','Dev2.jpg','Dev3.jpg'],txt:'Texte des trois devs ici.'},
+    {nom:'Les Devs',pv:'PV 3×70',t:'t4',rar:'★★ TRÈS RARE',imgs:['Dev3.jpg','Dev2.jpg','Dev1.png'],txt:'Texte des trois devs ici.'},
     {nom:'Le Manager IT',pv:'PV 999',rar:'✨ ULTRA RARE ✨',imgs:['Manager_IT.jpg'],ultra:true,txt:'Texte du manager IT ici.'}
 ]],
 3:['boule','La boule de cristal'],
@@ -475,7 +475,7 @@ function open(n){dayGo=0;const x=D[n],el=$('#c');if(stop)stop();stop=null;
    el.onclick=flip;el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip()}}};
   const pack=()=>{
    h.textContent='Clique sur le booster pour l\'ouvrir 🎁';nx.innerHTML='';
-   z.innerHTML='<button class="bpk" id="bpk" aria-label="Ouvrir le booster"><span>🎄<br>BOOSTER<br>SATURNE<br><small>5 CARTES</small></span></button>';
+   z.innerHTML='<button class="bpk" id="bpk" aria-label="Ouvrir le booster"><span>🎄<br>BOOSTER<br>SATURNE<br><small>8 CARTES</small></span></button>';
    $('#bpk').onclick=function(){this.classList.add('tear');whoosh(.6,1800,300,.12);setTimeout(()=>show(0),650)}};
   pack();
  }

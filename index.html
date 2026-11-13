@@ -183,6 +183,7 @@ svg{display:block;width:100%;height:auto;max-width:100%}
 .bcd.t3.up{filter:drop-shadow(0 0 8px rgba(47,127,216,.7))}
 .bcd.t4.up{filter:drop-shadow(0 0 16px rgba(142,68,214,.85))}
 #signMaison,#signInetum{cursor:pointer}#signMaison:hover,#signInetum:hover{fill:rgba(255,240,180,.16)}#signMaison:focus,#signInetum:focus{outline:none}
+.n.lock circle{fill:rgba(200,200,200,.65);stroke:#999}.n.lock text{fill:#777}
 </style>
 </head>
 <body>
@@ -310,7 +311,13 @@ const RIRE_SND='data:audio/mpeg;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjYwLjE2L
 const $=s=>document.querySelector(s),NS='http://www.w3.org/2000/svg';
 let seen={};try{seen=JSON.parse(localStorage.getItem('avent')||'{}')}catch(e){}
 const save=()=>{try{localStorage.setItem('avent',JSON.stringify(seen))}catch(e){}};
-
+function dispo(n){
+ if(/[?&]debug/.test(location.search))return true;
+ return new Date()>=new Date(2026,11,n)}
+function lockMsg(n){
+ bell();
+ $('#c').innerHTML='<h2>🔒 Pas encore !</h2><p>La case du '+n+' décembre ne s\'ouvrira que le jour J. Reviens à ce moment-là 🎅</p>';
+ $('#ov').classList.add('on')}
 /* ---------- Chemin : de INETUM à la Maison du Père Noël ---------- */
 const RT=[[250,948],[264,964],[286,961],[303,948],[324,940],[345,938],[367,942],[389,945],[411,886],[433,946],[454,949],[476,953],[498,952],[520,952],[542,950],[564,952],[586,953],[608,952],[629,957],[649,967],[670,970],[692,966],[713,967],[735,967],[757,963],[779,962],[801,962],[822,957],[843,950],[863,941],[885,941],[907,944],[928,945],[948,935],[964,920],[971,899],[979,879],[981,857],[984,835],[973,817],[953,812],[935,824],[915,835],[895,842],[873,843],[852,837],[832,829],[812,818],[798,802],[803,782],[819,766],[838,754],[858,746],[877,735],[893,720],[908,704],[926,691],[938,673],[950,655],[963,638],[971,617],[990,608],[1009,597],[1030,588],[1048,576],[1069,571],[1090,573],[1111,565],[1132,561],[1153,562],[1173,553],[1191,541],[1201,522],[1187,504],[1170,491],[1151,482],[1130,475],[1108,472],[1087,467],[1068,456],[1066,436],[1076,416],[1089,399],[1110,392],[1131,384],[1153,381],[1173,373],[1195,373],[1216,367],[1234,356],[1246,338],[1234,320],[1215,311],[1195,302],[1179,286],[1182,266],[1199,253],[1220,246],[1239,233],[1256,219],[1265,200],[1265,178],[1270,150],[1270,90]];
 let rd='M'+RT[0][0]+' '+RT[0][1];
@@ -321,7 +328,7 @@ const P=Array.from({length:25},(_,i)=>{const q=RP.getPointAtLength(LT*i/24);retu
 $('#trail').setAttribute('d',rd);
 const nodes=$('#nodes');
 for(let i=1;i<=24;i++){
- const g=document.createElementNS(NS,'g');g.setAttribute('class','n'+(seen[i]?' done':''));g.setAttribute('tabindex',0);g.setAttribute('role','button');g.setAttribute('aria-label','Jour '+i);g.id='n'+i;
+ const g=document.createElementNS(NS,'g');g.setAttribute('class','n'+(seen[i]?' done':'')+(dispo(i)?'':' lock'));g.setAttribute('tabindex',0);g.setAttribute('role','button');g.setAttribute('aria-label','Jour '+i);g.id='n'+i;
  g.innerHTML='<circle cx="'+P[i].x+'" cy="'+P[i].y+'" r="22" style="transform-origin:'+P[i].x+'px '+P[i].y+'px"/><text x="'+P[i].x+'" y="'+(P[i].y+8)+'">'+i+'</text>'+(seen[i]?'<text class="ck" x="'+(P[i].x+16)+'" y="'+(P[i].y-16)+'">⭐</text>':'');
  g.onclick=()=>go(i);g.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go(i)}};
  nodes.appendChild(g)}
@@ -339,7 +346,7 @@ function step(ts){const dt=Math.max(0,Math.min((ts-last)/1000,.05));last=ts;
  if(dir){t+=dir*Math.min(4.5*dt,Math.abs(target-t));wt+=dt;const k=Math.floor(wt*2.2);if(k!==wk){wk=k;foot()}t=Math.max(0,Math.min(24,t))}
  place();
  if(Math.abs(target-t)>.001){raf=requestAnimationFrame(step)}else{t=target;raf=0;place();if(dayGo)open(dayGo)}}
-function go(n){initAudio();dayGo=n;target=n;if(!raf){last=performance.now();raf=requestAnimationFrame(step)}}
+function go(n){initAudio();if(!dispo(n)){lockMsg(n);return}dayGo=n;target=n;if(!raf){last=performance.now();raf=requestAnimationFrame(step)}}
 place();
 
 /* ---------- Cloche ---------- */
@@ -931,18 +938,21 @@ function xmasGo(){
 $('#tree').onclick=xmasGo;
 $('#tree').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();xmasGo()}};
 /* ---------- Easter eggs : les deux pancartes (vidéos YouTube) ---------- */
-function signVideo(id,titre){
+function signVideo(id,titre,texte){
  initAudio();
  if(playing)MUS.pause();
  if(stop)stop();stop=null;
- $('#c').innerHTML='<h2>'+titre+'</h2><div style="width:100%;aspect-ratio:16/9"><iframe src="https://www.youtube.com/embed/'+id+'?autoplay=1&playsinline=1&rel=0" title="'+titre+'" style="width:100%;height:100%;border:0;border-radius:12px" allow="autoplay;encrypted-media;picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>';
+ $('#c').innerHTML='<h2>'+titre+'</h2><div style="width:100%;aspect-ratio:16/9"><iframe src="https://www.youtube.com/embed/'+id+'?autoplay=1&playsinline=1&rel=0" title="'+titre+'" style="width:100%;height:100%;border:0;border-radius:12px" allow="autoplay;encrypted-media;picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div><p>'+texte+'</p>';
  $('#ov').classList.add('on');
 }
-const SIGNS=[['#signMaison','uPNb9AsS2vU','🎅 Message de la Maison du Père Noël'],['#signInetum','0Kvw2BPKjz0','🎁 Un petit clin d\'œil d\'INETUM']];
-SIGNS.forEach(([sel,id,titre])=>{
+const SIGNS=[
+ ['#signMaison','uPNb9AsS2vU','🎅 Message de la Maison du Père Noël','Texte sous la vidéo de la Maison du Père Noël.'],
+ ['#signInetum','0Kvw2BPKjz0','🎁 Un petit clin d\'œil d\'INETUM','Texte sous la vidéo d\'INETUM.']
+];
+SIGNS.forEach(([sel,id,titre,texte])=>{
  const el=$(sel);
- el.onclick=()=>signVideo(id,titre);
- el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();signVideo(id,titre)}};
+ el.onclick=()=>signVideo(id,titre,texte);
+ el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();signVideo(id,titre,texte)}};
 });
 /* ---------- Easter egg : les deux moulins ---------- */
 let spinBusy={wm:false,wh:false};

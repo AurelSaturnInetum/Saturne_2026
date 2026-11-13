@@ -900,7 +900,7 @@ function xmasGo(){
  if(xmasBusy)return;xmasBusy=true;
  const G=document.createElementNS(NS,'g');G.style.pointerEvents='none';$('#map').appendChild(G);
  const mk=(tag,at)=>{const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);G.appendChild(e);return e};
- const COL=['#ff4d4d','#ffd34d','#5cff7a','#4dc3ff','#ff7ae0','#ffffff'],TOT=11000;
+ const COL=['#ff4d4d','#ffd34d','#5cff7a','#4dc3ff','#ff7ae0','#ffffff'],TOT=18000;
  try{if(playing)MUS.pause();FW.currentTime=0;FW.play().catch(()=>{})}catch(e){}
  const halos=[75,55,38].map(r=>mk('circle',{cx:418,cy:495,r,fill:'#ffd27a',opacity:0}));
  const L=[];for(let i=0;i<46;i++){
@@ -908,7 +908,7 @@ function xmasGo(){
   L.push({h:mk('circle',{cx:x,cy:y,r:7,fill:COL[i%6],opacity:0}),d:mk('circle',{cx:x,cy:y,r:3.2,fill:'#fff',opacity:0}),ph:i*1.7})}
  const star=mk('circle',{cx:418,cy:421,r:6,fill:'#fff6b0',opacity:0});
  const P=[[114,130,120,45],[326,120,300,35],[451,110,480,55],[594,135,620,60],[851,135,820,45],[1057,120,1085,40],[700,150,725,70]];
- const B=[];for(let i=0;i<12;i++){const p=P[(i*3+i%2)%7];B.push({s:p[0],sy:p[1],bx:p[2]+Math.random()*40-20,by:p[3]+Math.random()*25,t:300+i*750,c:COL[(i*2)%6],rk:null,tl:null,ps:null,done:false})}
+ const B=[];for(let i=0;i<21;i++){const p=P[(i*3+i%2)%7];B.push({s:p[0],sy:p[1],bx:p[2]+Math.random()*40-20,by:p[3]+Math.random()*25,t:300+i*750,c:COL[(i*2)%6],rk:null,tl:null,ps:null,done:false})}
  const t0=performance.now();
  (function f(now){
   const t=now-t0,fade=t>TOT-1000?Math.max(0,(TOT-t)/1000):1;

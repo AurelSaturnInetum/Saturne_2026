@@ -182,6 +182,7 @@ svg{display:block;width:100%;height:auto;max-width:100%}
 .bcd.t1 .brr,.bcd.t2 .brr,.bcd.t3 .brr,.bcd.t4 .brr{color:var(--tx)}
 .bcd.t3.up{filter:drop-shadow(0 0 8px rgba(47,127,216,.7))}
 .bcd.t4.up{filter:drop-shadow(0 0 16px rgba(142,68,214,.85))}
+#signMaison,#signInetum{cursor:pointer}#signMaison:hover,#signInetum:hover{fill:rgba(255,240,180,.16)}#signMaison:focus,#signInetum:focus{outline:none}
 </style>
 </head>
 <body>
@@ -231,6 +232,8 @@ svg{display:block;width:100%;height:auto;max-width:100%}
 <g id="smG" filter="url(#smf)" style="pointer-events:none"></g>
 <circle id="smGlow" cx="134" cy="247" r="11" fill="#ffb347" opacity="0" style="pointer-events:none"/>
 <ellipse id="smHit" cx="125" cy="228" rx="30" ry="48" fill="transparent" tabindex="0" role="button" aria-label="La maison et sa cheminée"/>
+<rect id="signMaison" x="1366" y="58" width="124" height="66" rx="8" fill="transparent" tabindex="0" role="button" aria-label="La pancarte Maison du Père Noël"/>
+<rect id="signInetum" x="66" y="838" width="164" height="94" rx="8" fill="transparent" tabindex="0" role="button" aria-label="La pancarte INETUM"/>
 </svg></div>
 <p class="cp">© HUCHARD Corp. Le calendrier et le code ont été crées à la main - Le village et le personnage ont été générés par IA</p>
 </main>
@@ -927,6 +930,20 @@ function xmasGo(){
 }
 $('#tree').onclick=xmasGo;
 $('#tree').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();xmasGo()}};
+/* ---------- Easter eggs : les deux pancartes (vidéos YouTube) ---------- */
+function signVideo(id,titre){
+ initAudio();
+ if(playing)MUS.pause();
+ if(stop)stop();stop=null;
+ $('#c').innerHTML='<h2>'+titre+'</h2><div style="width:100%;aspect-ratio:16/9"><iframe src="https://www.youtube.com/embed/'+id+'?autoplay=1&playsinline=1&rel=0" title="'+titre+'" style="width:100%;height:100%;border:0;border-radius:12px" allow="autoplay;encrypted-media;picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>';
+ $('#ov').classList.add('on');
+}
+const SIGNS=[['#signMaison','uPNb9AsS2vU','🎅 Message de la Maison du Père Noël'],['#signInetum','0Kvw2BPKjz0','🎁 Un petit clin d\'œil d\'INETUM']];
+SIGNS.forEach(([sel,id,titre])=>{
+ const el=$(sel);
+ el.onclick=()=>signVideo(id,titre);
+ el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();signVideo(id,titre)}};
+});
 /* ---------- Easter egg : les deux moulins ---------- */
 let spinBusy={wm:false,wh:false};
 function whoosh(dur,f0,f1,vol){try{initAudio();if(!ac)return;const n=ac.currentTime,len=ac.sampleRate*dur,b=ac.createBuffer(1,len,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1;const s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=b;f.type='bandpass';f.Q.value=1.2;f.frequency.setValueAtTime(f0,n);f.frequency.linearRampToValueAtTime(f1,n+dur*.45);f.frequency.linearRampToValueAtTime(f0,n+dur);g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(vol,n+dur*.3);g.gain.linearRampToValueAtTime(0,n+dur);s.connect(f).connect(g).connect(ac.destination);s.start(n)}catch(e){}}

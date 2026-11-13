@@ -313,7 +313,7 @@ let seen={};try{seen=JSON.parse(localStorage.getItem('avent')||'{}')}catch(e){}
 const save=()=>{try{localStorage.setItem('avent',JSON.stringify(seen))}catch(e){}};
 function dispo(n){
  if(/[?&]debug/.test(location.search))return true;
- return new Date()>=new Date(2026,11,n)}
+ return new Date()>=new Date(2026,10,n)}
 function lockMsg(n){
  bell();
  $('#c').innerHTML='<h2>🔒 Pas encore !</h2><p>La case du '+n+' décembre ne s\'ouvrira que le jour J. Reviens à ce moment-là 🎅</p>';

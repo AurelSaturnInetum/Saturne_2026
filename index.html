@@ -464,8 +464,8 @@ function open(n){dayGo=0;const x=D[n],el=$('#c');if(stop)stop();stop=null;
     if(c.ultra)bell();else whoosh(.35,500,1400,.1);
     h.textContent=c.rar;
     const last=k===C.length-1;
-    nx.innerHTML='<button class="b" id="bnb">'+(last?'🔁 Ouvrir un autre booster':'Carte suivante ▶')+'</button>';
-    $('#bnb').onclick=()=>last?pack():show(k+1)};
+    if(!last){nx.innerHTML='<button class="b" id="bnb">Carte suivante ▶</button>';
+    $('#bnb').onclick=()=>show(k+1)}};
    el.onclick=flip;el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();flip()}}};
   const pack=()=>{
    h.textContent='Clique sur le booster pour l\'ouvrir 🎁';nx.innerHTML='';

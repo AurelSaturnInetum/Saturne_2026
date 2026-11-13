@@ -382,7 +382,7 @@ back.onclick=()=>{bell();close()};
 /* ---------- Contenus ---------- */
 const E=['🎄','🎁','⭐','🔔','🦌','🍪','⛄','🧦','🕯️','🎅','❄️','🍬'];
 const D={
-1:['gif','Bienvenue dans le calendrier de l\'avent 2026','jour1.gif','Pleins de bonnes choses vous attendent, des jeux, des recettes et des secrets... Alors, soyez curieux, attentifs et patient😊'],
+1:['gif','Bienvenue dans le calendrier de l\'avent 2026','jour1.gif','Plein de bonnes choses vous attendent : des jeux, des recettes et des secrets qui se cachent... Alors, soyez curieux, attentifs et patients😊'],
 2:['booster','Ouverture de booster',[
     {nom:'Le N1',pv:'PV 90',t:'t1',rar:'◆ COMMUNE',imgs:['N1.jpg'],txt:'Premier rempart face à « ça ne marche plus ». Phrase fétiche : « Avez-vous essayé de l’éteindre et de le rallumer ? »'},
     {nom:'Le 3X8',pv:'PV 100',t:'t1',rar:'◆ COMMUNE',imgs:['3X8.jpg'],txt:'Quand toute la France dort, eux veillent. Le café, lui, ne dort jamais non plus.'},
@@ -409,23 +409,23 @@ const D={
     {q:'Comment s’appelle le personnage de la chanson « Petit Papa Noël » ?',o:['Le marchand de sable','Le bonhomme de neige','Le Père Noël'],a:2},
     {q:'Sous quelle plante s’embrasse-t-on à Noël ?',o:['Le cactus','Le gui','Le laurier'],a:1}
 ]],
-8:['gif','Noël approche!!!','dance.gif','Plus que 16 jours avant le réveillons... Sortez les pulls, les chaussettes et les plaides de Noël😊'],
+8:['gif','Noël approche!!!','dance.gif','Plus que 16 jours avant le réveillon... Sortez les pulls, les chaussettes et les plaids de Noël😊'],
 9:['pendu','Le pendu du jour','_starwars','À quoi pourrait donc servir ce déclencheur...😏😏😏'],
 10:['puzzle','Le puzzle du jour'],
 11:['yt','La vidéo du jour','G06EUSiyTGQ','Pour tous les fans de la SNCF...'],
 12:['rec','Pain d\'épices maison','🍞',['250 g de farine','200 g de miel','1 sachet de levure','2 c. à c. d\'épices à pain d\'épices','10 cl de lait'],['Fais tiédir le miel avec le lait.','Mélange avec la farine, la levure et les épices.','Verse dans un moule beurré.','Cuis 40 min à 160 °C.']],
 13:['mem','Memory de Noël',8],
 14:['yt','La vidéo du jour','27JZMgLZjj0','Une petite danse de Noël que vous pouvez reproduire sur site ou chez vous 😁'],
-15:['gif','Repas de Noël du CDS Saturne','repas.gif','Youpi, pour ceux qui sont sur site, régalez-vous bien et à la vôtre! Pour ceux en TT, trinquez à distance avec votre verre et vos petits-fours !🎉'],
+15:['gif','Repas de Noël du CDS Saturne','repas.gif','Youpi, pour ceux qui sont sur site, régalez-vous bien et à la vôtre ! Pour ceux en TT, trinquez à distance avec votre verre et vos petits-fours !🎉'],
 16:['rec','Pomme-cannelle chaude','🍎',['1 l de jus de pomme','2 bâtons de cannelle','3 clous de girofle','1 orange en rondelles'],['Mets tout dans une casserole.','Chauffe doucement 10 min sans bouillir.','Sers dans de jolis verres.']],
 17:['alarm','Bouton d\'alarme','Ne pas appuyer !','Vous vous êtes fait avoir… 🎶','Ay8lynMZ4mE'],
-18:['yt','La vidéo du jour','EhBXsV_ENH4','... Et vous, aimez-vous les trains? 🤣'],
+18:['yt','La vidéo du jour','EhBXsV_ENH4','... Et vous, aimez-vous les trains ? 🤣'],
 19:['catch','Tempête de flocons',14],
 20:['rec','Truffes au chocolat','🍫',['200 g de chocolat noir','10 cl de crème liquide','Cacao en poudre'],['Fais chauffer la crème et verse-la sur le chocolat.','Mélange, puis laisse prendre au frais 2 h.','Forme des boules et roule-les dans le cacao.']],
 21:['cookie','Le biscuit de fortune 2027'],
-22:['yt','La vidéo du jour','IrFyhs4JPUo','Et vous l\'équipe SATURNE, vous êtes toujours là!!🤣🤣🤣'],
+22:['yt','La vidéo du jour','IrFyhs4JPUo','Et vous l\'équipe SATURNE, vous êtes toujours là !!🤣🤣🤣'],
 23:['troll','Questionnaire de satisfaction'],
-24:['gif','Joyeux Noël !','noel.gif','La veille de Noël — Tu as ouvert toutes les cases. Que votre Noël soit pleine de joies, de cadeaux et de gâteaux !']};
+24:['gif','Joyeux Noël !','noel.gif','La veille de Noël — Tu as ouvert toutes les cases. Que votre Noël soit plein de joies, de cadeaux et de gâteaux !']};
 
 const sh=a=>a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(v=>v[1]);
 let stop=null;
@@ -943,8 +943,8 @@ function signVideo(id,titre,texte){
  $('#ov').classList.add('on');
 }
 const SIGNS=[
- ['#signMaison','ONTVUomrRik','🎅 Message de la Maison du Père Noël','Vous souvenez-vous de cette pub?.'],
- ['#signInetum','0Kvw2BPKjz0','🎁 Un petit clin d\'œil d\'INETUM','Prêt à faire du parkour sur le plateau?']
+ ['#signMaison','ONTVUomrRik','🎅 Message de la Maison du Père Noël','Vous souvenez-vous de cette pub ?'],
+ ['#signInetum','0Kvw2BPKjz0','🎁 Un petit clin d\'œil d\'INETUM','Prêt à faire du parkour sur le plateau ?']
 ];
 SIGNS.forEach(([sel,id,titre,texte])=>{
  const el=$(sel);

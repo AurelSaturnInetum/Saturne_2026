@@ -184,6 +184,29 @@ svg{display:block;width:100%;height:auto;max-width:100%}
 .bcd.t4.up{filter:drop-shadow(0 0 16px rgba(142,68,214,.85))}
 #signMaison,#signInetum{cursor:pointer}#signMaison:hover,#signInetum:hover{fill:rgba(255,240,180,.16)}#signMaison:focus,#signInetum:focus{outline:none}
 .n.lock circle{fill:rgba(200,200,200,.65);stroke:#999}.n.lock text{fill:#777}
+#slHit{cursor:pointer}#slHit:hover{fill:rgba(255,240,180,.14)}#slHit:focus{outline:none}
+/* ---------- Easter egg : le cadeau du traîneau ---------- */
+#gf{position:fixed;inset:0;z-index:25;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(20,8,10,.78)}
+#gf.on{display:flex}
+.gfw{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;width:min(100%,420px);animation:gfp .5s cubic-bezier(.2,.9,.3,1.3)}
+@keyframes gfp{from{transform:scale(.3);opacity:0}}
+.gfg{width:min(55vw,210px);padding:0;border:0;background:none;cursor:pointer;transform-origin:50% 90%;animation:gfs 1.7s ease-in-out infinite;filter:drop-shadow(0 12px 14px rgba(0,0,0,.5));position:relative;z-index:2}
+.gfg svg{display:block;width:100%;height:auto;overflow:visible}
+@keyframes gfs{0%,45%,100%{transform:rotate(0)}6%{transform:rotate(-9deg) translateX(-4px)}14%{transform:rotate(9deg) translateX(4px)}22%{transform:rotate(-7deg)}30%{transform:rotate(7deg)}38%{transform:rotate(-3deg)}}
+.gl{transition:transform .7s cubic-bezier(.2,.8,.3,1),opacity .7s}
+#gf.open .gfg{animation:none}
+#gf.open .gl{transform:translate(18px,-90px) rotate(18deg);opacity:0}
+.gfr{position:absolute;left:50%;top:50%;width:520px;height:520px;margin:-260px 0 0 -260px;border-radius:50%;pointer-events:none;opacity:0;transition:opacity 1s;background:repeating-conic-gradient(rgba(255,224,130,.42) 0 7deg,transparent 7deg 18deg);-webkit-mask-image:radial-gradient(circle,#000 12%,transparent 68%);mask-image:radial-gradient(circle,#000 12%,transparent 68%);animation:gfr 24s linear infinite}
+@keyframes gfr{to{transform:rotate(360deg)}}
+#gf.open .gfr{opacity:1}
+.gfm{position:relative;z-index:2;min-height:120px;margin:0;display:flex;align-items:center;justify-content:center;text-align:center;font:700 29px/1.3 'Mountains of Christmas',Georgia,serif;color:#fff8dc;opacity:0;transform:translateY(14px) scale(.9);transition:opacity .9s .25s,transform .9s .25s;text-shadow:0 0 6px #fff,0 0 16px #ffd24a,0 0 34px #ffb347,0 0 60px #ff9a3c}
+#gf.open .gfm{opacity:1;transform:none;animation:gfh 2.8s ease-in-out 1.2s infinite alternate}
+@keyframes gfh{from{text-shadow:0 0 6px #fff,0 0 16px #ffd24a,0 0 34px #ffb347,0 0 60px #ff9a3c}to{text-shadow:0 0 10px #fff,0 0 26px #ffd24a,0 0 54px #ffb347,0 0 90px #ff9a3c}}
+.gfh{position:relative;z-index:2;margin:0;color:#fff;opacity:.85;font-weight:700}
+#gf.open .gfh{display:none}
+.gfa{position:relative;z-index:2;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+#gf:not(.open) #gfn{display:none}
+@media (prefers-reduced-motion:reduce){.gfg,.gfr,#gf.open .gfm,.gfw{animation:none}}
 </style>
 </head>
 <body>
@@ -235,6 +258,7 @@ svg{display:block;width:100%;height:auto;max-width:100%}
 <ellipse id="smHit" cx="125" cy="228" rx="30" ry="48" fill="transparent" tabindex="0" role="button" aria-label="La maison et sa cheminée"/>
 <rect id="signMaison" x="1366" y="58" width="124" height="66" rx="8" fill="transparent" tabindex="0" role="button" aria-label="La pancarte Maison du Père Noël"/>
 <rect id="signInetum" x="66" y="838" width="164" height="94" rx="8" fill="transparent" tabindex="0" role="button" aria-label="La pancarte INETUM"/>
+<ellipse id="slHit" cx="703" cy="773" rx="48" ry="34" fill="transparent" tabindex="0" role="button" aria-label="Le traîneau et son cadeau"/>
 </svg></div>
 <p class="cp">© HUCHARD Corp. Le calendrier et le code ont été crées à la main - Le village et le personnage ont été générés par IA</p>
 </main>
@@ -960,6 +984,61 @@ SIGNS.forEach(([sel,id,titre,texte])=>{
  el.onclick=()=>signVideo(id,titre,texte);
  el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();signVideo(id,titre,texte)}};
 });
+/* ---------- Easter egg : le cadeau du traîneau ---------- */
+const GIFT_MSGS=[
+"Tu fais plus de bien autour de toi que tu ne l’imagines.",
+"Ton sourire illumine le visage de ceux qui en ont le plus besoin.",
+"Tu as le droit de ne pas être parfait : on t’apprécie comme tu es.",
+"Quelque part, quelqu’un pense à toi avec un grand sourire en ce moment.",
+"Ta gentillesse est contagieuse. Continue de la propager : c’est le seul virus qu’on veut voir circuler.",
+"Même les jours de tickets à rallonge, tu fais la différence.",
+"Tu es plus fort que ton dernier bug et bien plus précieux que ton dernier planning.",
+"Aujourd’hui, tu as le droit de faire une vraie pause. Avec un chocolat chaud.",
+"Ce que tu fais compte, même quand personne ne le dit à voix haute.",
+"Certaines personnes sont plus heureuses depuis que tu es dans leur vie.",
+"Ta bonne humeur est un cadeau pour tout le monde autour de toi.",
+"Tu as survécu à 100 % de tes pires journées. Beau palmarès.",
+"Respire. Tu avances à ton rythme, et c’est très bien comme ça.",
+"Tu n’as pas besoin d’être parfait pour être formidable.",
+"Ton énergie réchauffe la pièce mieux qu’un radiateur de bureau.",
+"Prends soin de toi comme tu prends soin des autres : tu le mérites.",
+"Merci pour tout ce que tu fais sans qu’on le remarque.",
+"Tu as le droit d’être fier de toi. Là, maintenant, tout de suite.",
+"Le monde est un peu plus doux grâce à toi.",
+"Ton rire est un petit feu d’artifice pour ceux qui l’entendent.",
+"Tu es exactement là où tu dois être, et on est ravis que ce soit avec nous."
+];
+let gfBag=[],gfEl=null;
+function gfBuild(){
+ gfEl=document.createElement('div');gfEl.id='gf';
+ gfEl.innerHTML='<div class="gfw"><div class="gfr"></div>'
+ +'<button class="gfg" id="gfg" aria-label="Ouvrir le cadeau"><svg viewBox="0 0 200 200" aria-hidden="true">'
+ +'<rect x="30" y="98" width="140" height="88" rx="6" fill="#c9302c"/><rect x="92" y="98" width="16" height="88" fill="#ffd24a"/><rect x="30" y="98" width="140" height="10" fill="rgba(0,0,0,.18)"/>'
+ +'<g class="gl"><rect x="20" y="70" width="160" height="32" rx="6" fill="#e0443f"/><rect x="92" y="70" width="16" height="32" fill="#ffd24a"/>'
+ +'<ellipse cx="80" cy="58" rx="26" ry="14" fill="#ffd24a" transform="rotate(-20 80 58)"/><ellipse cx="120" cy="58" rx="26" ry="14" fill="#ffd24a" transform="rotate(20 120 58)"/><circle cx="100" cy="64" r="10" fill="#e3a72f"/></g>'
+ +'</svg></button>'
+ +'<p class="gfm" id="gfm" aria-live="polite"></p><p class="gfh">Clique sur le cadeau 🎁</p>'
+ +'<div class="gfa"><button class="b" id="gfn">🎁 Un autre cadeau</button><button class="b" id="gfx">Fermer</button></div></div>';
+ document.body.appendChild(gfEl);
+ gfEl.onclick=e=>{if(e.target===gfEl)gfClose()};
+ $('#gfx').onclick=gfClose;
+ $('#gfn').onclick=()=>{gfEl.classList.remove('open');$('#gfm').textContent='';whoosh(.3,500,1200,.08)};
+ $('#gfg').onclick=()=>{
+  if(gfEl.classList.contains('open'))return;
+  if(!gfBag.length)gfBag=sh(GIFT_MSGS);
+  $('#gfm').textContent=gfBag.pop();
+  gfEl.classList.add('open');bell();
+ };
+}
+function gfGo(){
+ initAudio();if(!gfEl)gfBuild();
+ gfEl.classList.remove('open');$('#gfm').textContent='';gfEl.classList.add('on');
+ whoosh(.45,300,1400,.1);
+}
+function gfClose(){if(gfEl)gfEl.classList.remove('on','open')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')gfClose()});
+$('#slHit').onclick=gfGo;
+$('#slHit').onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();gfGo()}};
 /* ---------- Easter egg : les deux moulins ---------- */
 let spinBusy={wm:false,wh:false};
 function whoosh(dur,f0,f1,vol){try{initAudio();if(!ac)return;const n=ac.currentTime,len=ac.sampleRate*dur,b=ac.createBuffer(1,len,ac.sampleRate),d=b.getChannelData(0);for(let i=0;i<len;i++)d[i]=Math.random()*2-1;const s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=b;f.type='bandpass';f.Q.value=1.2;f.frequency.setValueAtTime(f0,n);f.frequency.linearRampToValueAtTime(f1,n+dur*.45);f.frequency.linearRampToValueAtTime(f0,n+dur);g.gain.setValueAtTime(0,n);g.gain.linearRampToValueAtTime(vol,n+dur*.3);g.gain.linearRampToValueAtTime(0,n+dur);s.connect(f).connect(g).connect(ac.destination);s.start(n)}catch(e){}}
